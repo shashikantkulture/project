@@ -1,0 +1,39 @@
+{
+  "name": "luxignia-3d-ecommerce-crm",
+  "version": "1.0.0",
+  "description": "Luxignia Artisanal Luxury Décor - 3D Interactive E-Commerce Website with CRM & Admin Panel",
+  "main": "server.js",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^18.0.7",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.3",
+    "lucide-react": "^1.55.0",
+    "next": "^14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.6.1",
+    "nodemon": "^3.1.0",
+    "postcss": "^8.5.29",
+    "tailwindcss": "^3.4.19"
+  },
+  "keywords": [
+    "threejs",
+    "ecommerce",
+    "crm",
+    "admin-panel",
+    "luxury-decor",
+    "nodejs"
+  ],
+  "author": "Luxignia Studio",
+  "license": "ISC"
+}

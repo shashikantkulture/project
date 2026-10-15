@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxignia — Artisanal Luxury Décor, 3D Studio & Executive CRM</title>
+  <meta name="description" content="Sculptural décor, astronomical clocks, and gilded Vastu pieces chosen for discerning spaces, executive penthouses, and private estates.">
+  <meta property="og:title" content="Luxignia — Artisanal Luxury Décor & Statement Living">
+  <meta property="og:description" content="Interactive 3D product studio, bespoke Vastu curation, executive gifting, and white-glove security delivery.">
+  <meta property="og:type" content="website">
+
+  <!-- Tailwind CSS & Three.js CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+  
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-background text-on-surface font-sans antialiased selection:bg-amber-200 selection:text-green-950">
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="navbar-wrapper">
+    <!-- Announcement Bar -->
+    <div class="announcement-bar flex items-center justify-center gap-4">
+      <span>Curated for discerning spaces</span>
+      <span class="opacity-40">•</span>
+      <span>7-day white-glove returns</span>
+      <span class="opacity-40 hidden sm:inline">•</span>
+      <span class="hidden sm:inline">Vastu Directional Certified</span>
+      <span class="opacity-40 hidden md:inline">•</span>
+      <span class="hidden md:inline">Pan-India Security Delivery</span>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <div class="main-header justify-between max-w-7xl mx-auto">
+      <!-- Nav Links (Desktop) -->
+      <nav class="hidden xl:flex items-center gap-1">
+        <a href="#" data-path="home" class="nav-link active">Home</a>
+        <a href="#" data-path="about" class="nav-link">About Atelier</a>
+        <a href="#" data-path="shop" class="nav-link">Shop Collection</a>
+        <a href="#" data-path="gifting" class="nav-link">Gifting Suite</a>
+        <a href="#" data-path="vastu" class="nav-link">Vastu & Energy</a>
+        <a href="#" data-path="salon" class="nav-link">VIP Patron Vault</a>
+        <a href="#" data-path="contact" class="nav-link">Contact</a>
+        
+        <!-- Authenticated Role Navigation Links -->
+        <a href="#" id="nav-link-dashboard" data-path="dashboard" class="nav-link text-forest-brand font-bold" style="display:none;">
+          <span class="material-symbols-outlined text-[16px]">account_circle</span>
+          <span>My Portal</span>
+        </a>
+        <a href="#" id="nav-link-crm" data-path="crm" class="nav-link text-gold-bright flex items-center gap-1 font-bold" style="display:none;">
+          <span class="material-symbols-outlined text-[16px]">dashboard</span>
+          <span>CRM</span>
+        </a>
+        <a href="#" id="nav-link-admin" data-path="admin" class="nav-link text-purple-700 flex items-center gap-1 font-bold" style="display:none;">
+          <span class="material-symbols-outlined text-[16px]">admin_panel_settings</span>
+          <span>Admin</span>
+        </a>
+      </nav>
+
+      <!-- Brand Logo -->
+      <a href="#" data-path="home" class="brand-logo">
+        <span class="material-symbols-outlined text-gold-antique text-2xl">spa</span>
+        <div class="flex flex-col items-center">
+          <span class="title text-primary">Luxignia</span>
+          <span class="text-[9px] uppercase tracking-[0.25em] text-gold-antique font-semibold -mt-1">Artisanal Living</span>
+        </div>
+      </a>
+
+      <!-- Right Action Cluster -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Search Trigger -->
+        <button onclick="window.app.switchView('shop'); document.getElementById('catalog-search')?.focus();" class="p-2 text-muted hover:text-primary transition-colors" title="Search Catalog">
+          <span class="material-symbols-outlined text-[22px]">search</span>
+        </button>
+
+        <!-- Wishlist -->
+        <button onclick="window.app.openWishlist();" class="p-2 text-muted hover:text-primary transition-colors relative" title="Curator Wishlist">
+          <span class="material-symbols-outlined text-[22px]">favorite</span>
+          <span id="wishlist-count-badge" class="absolute -top-1 -right-1 bg-gold-antique text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center leading-none" style="display:none;">0</span>
+        </button>
+
+        <!-- Cart Drawer Trigger -->
+        <button onclick="window.app.openCartDrawer()" class="p-2 text-muted hover:text-primary transition-colors relative" title="Acquisition Bag">
+          <span class="material-symbols-outlined text-[22px]">shopping_bag</span>
+          <span class="cart-count-badge absolute -top-1 -right-1 bg-gold-bright text-forest-deep text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center leading-none" style="display:none;">0</span>
+        </button>
+
+        <!-- Book Showroom Visit CTA -->
+        <button onclick="window.app.openShowroomModal()" class="hidden md:inline-flex btn-outline py-2 px-3 text-xs">
+          <span>Book Visit</span>
+        </button>
+
+        <!-- Auth Button / Patron Profile Menu -->
+        <div id="auth-header-container" class="relative">
+          <!-- Guest State: Sign In Button -->
+          <button id="btn-header-login" onclick="window.app.openAuthModal('login')" class="btn-primary py-2 px-4 text-xs">
+            <span class="material-symbols-outlined text-[16px]">lock</span>
+            <span>Sign In</span>
+          </button>
+
+          <!-- Authenticated State: User Dropdown -->
+          <div id="user-header-menu" class="hidden items-center gap-2">
+            <button onclick="window.app.toggleUserDropdown()" class="flex items-center gap-2 py-1.5 px-3 rounded-full bg-surface-muted border border-gold hover:bg-white transition-colors">
+              <span class="w-6 h-6 rounded-full bg-forest-brand text-white flex items-center justify-center text-xs font-bold" id="user-avatar-initial">P</span>
+              <span class="text-xs font-bold text-primary max-w-[110px] truncate" id="user-header-name">Sophia</span>
+              <span class="material-symbols-outlined text-[16px] text-muted">expand_more</span>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="dropdown-user-menu" class="hidden absolute right-0 top-12 w-56 bg-white rounded-xl shadow-xl border border-subtle py-2 z-50">
+              <div class="px-4 py-2 border-b border-subtle">
+                <div class="font-bold text-xs text-primary" id="dropdown-user-fullname">Sophia von Rose</div>
+                <div class="text-[11px] text-muted truncate" id="dropdown-user-email">patron@luxignia.com</div>
+                <span class="role-badge role-customer mt-1" id="dropdown-user-role">Patron</span>
+              </div>
+              <a href="#" data-path="dashboard" class="flex items-center gap-2 px-4 py-2 text-xs text-primary hover:bg-surface-linen">
+                <span class="material-symbols-outlined text-[16px]">dashboard</span>
+                <span>My Patron Portal</span>
+              </a>
+              <a href="#" onclick="window.app.switchDashboardTab('orders'); return false;" class="flex items-center gap-2 px-4 py-2 text-xs text-primary hover:bg-surface-linen">
+                <span class="material-symbols-outlined text-[16px]">inventory_2</span>
+                <span>My Acquisitions</span>
+              </a>
+              <a href="#" onclick="window.app.switchDashboardTab('enquiries'); return false;" class="flex items-center gap-2 px-4 py-2 text-xs text-primary hover:bg-surface-linen">
+                <span class="material-symbols-outlined text-[16px]">forum</span>
+                <span>Concierge Inquiries</span>
+              </a>
+              <div id="dropdown-staff-links" class="border-t border-subtle my-1 pt-1" style="display:none;">
+                <a href="#" data-path="crm" class="flex items-center gap-2 px-4 py-2 text-xs text-gold-bright font-bold hover:bg-surface-linen">
+                  <span class="material-symbols-outlined text-[16px]">leaderboard</span>
+                  <span>Executive CRM</span>
+                </a>
+              </div>
+              <div id="dropdown-admin-links" class="border-t border-subtle my-1 pt-1" style="display:none;">
+                <a href="#" data-path="admin" class="flex items-center gap-2 px-4 py-2 text-xs text-purple-700 font-bold hover:bg-surface-linen">
+                  <span class="material-symbols-outlined text-[16px]">admin_panel_settings</span>
+                  <span>System Admin Panel</span>
+                </a>
+              </div>
+              <div class="border-t border-subtle my-1"></div>
+              <button onclick="window.app.logout()" class="w-full text-left flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50">
+                <span class="material-symbols-outlined text-[16px]">logout</span>
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button onclick="document.getElementById('mobile-menu-drawer').classList.add('active')" class="xl:hidden p-2 text-muted hover:text-primary">
+          <span class="material-symbols-outlined text-2xl">menu</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MOBILE NAVIGATION DRAWER ================= -->
+  <div id="mobile-menu-drawer" onclick="if(event.target === this) this.classList.remove('active');">
+    <div class="mobile-menu-panel">
+      <div>
+        <div class="flex items-center justify-between pb-6 border-b border-subtle mb-6">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-gold-antique text-2xl">spa</span>
+            <span class="font-serif text-xl font-bold text-primary">Luxignia</span>
+          </div>
+          <button onclick="document.getElementById('mobile-menu-drawer').classList.remove('active')" class="p-1 text-muted">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <nav class="flex flex-col gap-3">
+          <a href="#" data-path="home" class="nav-link mobile-link active">Home</a>
+          <a href="#" data-path="about" class="nav-link mobile-link">About Atelier</a>
+          <a href="#" data-path="shop" class="nav-link mobile-link">Shop Collection</a>
+          <a href="#" data-path="gifting" class="nav-link mobile-link">Gifting Suite</a>
+          <a href="#" data-path="vastu" class="nav-link mobile-link">Vastu & Energy</a>
+          <a href="#" data-path="salon" class="nav-link mobile-link">VIP Patron Vault</a>
+          <a href="#" data-path="contact" class="nav-link mobile-link">Contact</a>
+          <a href="#" id="mobile-link-dashboard" data-path="dashboard" class="nav-link mobile-link text-forest-brand font-bold" style="display:none;">My Patron Portal</a>
+          <a href="#" id="mobile-link-crm" data-path="crm" class="nav-link mobile-link text-gold-bright font-bold" style="display:none;">Executive CRM</a>
+          <a href="#" id="mobile-link-admin" data-path="admin" class="nav-link mobile-link text-purple-700 font-bold" style="display:none;">Admin Panel</a>
+        </nav>
+      </div>
+
+      <div class="pt-6 border-t border-subtle">
+        <button onclick="document.getElementById('mobile-menu-drawer').classList.remove('active'); window.app.openShowroomModal();" class="btn-gold w-full justify-center py-3 text-xs mb-3">
+          <span>Book Showroom Visit</span>
+        </button>
+        <div class="text-[10px] text-muted text-center uppercase tracking-wider">
+          Mayfair • Worli • Lutyens • Paris
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN CONTENT WRAPPER ================= -->
+  <main class="w-full pt-28 pb-16">
+
+    <!-- ---------------- PAGE 1: HOME VIEW ---------------- -->
+    <section id="view-home" class="app-view">
+      <!-- HERO SECTION -->
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-8 lg:py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- Left Column: Editorial Typography -->
+          <div class="lg:col-span-6 flex flex-col items-start">
+            <div class="inline-flex items-center gap-2 mb-4">
+              <span class="text-gold-antique font-serif italic text-lg">the corner-office favourite</span>
+              <span class="material-symbols-outlined text-gold-bright text-[18px]">verified</span>
+            </div>
+
+            <h1 class="display-lg mb-6">
+              Objects that<br>
+              <span class="relative inline-block px-3 py-0.5">
+                <span class="relative z-10 italic font-normal">hold</span>
+                <svg class="absolute inset-0 w-full h-full text-gold-antique scale-110 pointer-events-none -rotate-2" fill="none" viewBox="0 0 140 60">
+                  <path d="M7 32C15 8 115 4 131 28C143 45 92 56 34 54C12 53 2 40 18 20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+                </svg>
+              </span>
+              the room.
+            </h1>
+
+            <p class="body-lg max-w-lg mb-8">
+              Sculptural décor, astronomical clocks and gilded Vastu pieces — chosen one by one for discerning homes, executive penthouses, and private estates.
+            </p>
+
+            <!-- CTA Cluster -->
+            <div class="flex flex-wrap items-center gap-4 mb-10">
+              <button onclick="window.app.switchView('shop')" class="btn-primary">
+                <span>Explore Collection</span>
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </button>
+
+              <button onclick="window.app.openShowroomModal()" class="btn-outline">
+                <span>Book Showroom Visit</span>
+              </button>
+            </div>
+
+            <!-- Ticker -->
+            <div class="flex items-center gap-6 text-xs uppercase tracking-widest text-muted">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-primary">01</span>
+                <span>Aurelius</span>
+              </div>
+              <span class="text-gray-300">•</span>
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-primary">02</span>
+                <span>Odette</span>
+              </div>
+              <span class="text-gray-300">•</span>
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-primary">03</span>
+                <span>Ascend</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive 3D Canvas Arch -->
+          <div class="lg:col-span-6 flex justify-center">
+            <div class="roman-arch-container w-full max-w-[500px] aspect-[4/5] p-6 flex flex-col justify-between">
+              <!-- Top Badge Tag -->
+              <div class="self-end bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full flex items-center gap-2 shadow-sm border border-gold">
+                <span class="w-2 h-2 rounded-full bg-gold-bright animate-pulse"></span>
+                <span class="label-sm text-primary">Interactive 3D Studio Canvas</span>
+              </div>
+
+              <!-- Embedded Three.js Viewport -->
+              <div id="hero-threejs-container" class="three-viewport h-[420px]" data-cursor="3d"></div>
+
+              <!-- Bottom Hint -->
+              <div class="text-center text-xs uppercase tracking-wider text-muted font-semibold pt-2">
+                <span>Drag to Rotate Sculpture • 360° Studio View</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FEATURED CATEGORIES SECTION -->
+      <section class="max-w-7xl mx-auto px-6 lg:px-12 py-16 border-t border-subtle">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+          <div>
+            <span class="label-sm text-gold-antique">Curated Categories</span>
+            <h2 class="headline-xl mt-1">Artisanal Statement Collections</h2>
+          </div>
+          <button onclick="window.app.switchView('shop')" class="btn-outline mt-4 md:mt-0 text-xs">
+            <span>View Full Catalog</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Card 1 -->
+          <div onclick="window.app.filterByCategory('Sculptures')" class="luxury-card p-8 flex flex-col justify-between min-h-[320px] bg-gradient-to-br from-surface-linen to-white cursor-pointer group">
+            <div>
+              <span class="badge-gold mb-4">Sculptural Heritage</span>
+              <h3 class="headline-md text-primary group-hover:text-gold-antique transition-colors">Monumental Sculptures</h3>
+              <p class="text-xs text-muted mt-2">Hand-cast bronze & 24K gold leaf equestrian and crest silhouettes.</p>
+            </div>
+            <div class="flex items-center gap-2 text-xs font-bold text-primary uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+              <span>Explore Sculptures</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div onclick="window.app.filterByCategory('Clocks')" class="luxury-card p-8 flex flex-col justify-between min-h-[320px] bg-gradient-to-br from-surface-linen to-white cursor-pointer group">
+            <div>
+              <span class="badge-gold mb-4">Horological Art</span>
+              <h3 class="headline-md text-primary group-hover:text-gold-antique transition-colors">Astronomical Clocks</h3>
+              <p class="text-xs text-muted mt-2">8-day mechanical pendulum escapements in burnished brass & sapphire glass.</p>
+            </div>
+            <div class="flex items-center gap-2 text-xs font-bold text-primary uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+              <span>Explore Timepieces</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div onclick="window.app.filterByCategory('Vastu Masterpieces')" class="luxury-card p-8 flex flex-col justify-between min-h-[320px] bg-gradient-to-br from-surface-linen to-white cursor-pointer group">
+            <div>
+              <span class="badge-gold mb-4">Spatial Alignment</span>
+              <h3 class="headline-md text-primary group-hover:text-gold-antique transition-colors">Vastu Energy Masterpieces</h3>
+              <p class="text-xs text-muted mt-2">Harmonized sacred geometry obelisks and emerald crystals for high-energy zones.</p>
+            </div>
+            <div class="flex items-center gap-2 text-xs font-bold text-primary uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+              <span>Explore Vastu Objects</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CURATOR'S SHOWROOM HIGHLIGHTS -->
+      <section class="max-w-7xl mx-auto px-6 lg:px-12 py-16 border-t border-subtle">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <span class="label-sm text-gold-antique">Masterpiece Reserve</span>
+          <h2 class="headline-xl mt-1">Showroom Curations</h2>
+          <p class="body-lg mt-2">Individually numbered masterworks crafted with authentic materials from our private atelier.</p>
+        </div>
+
+        <div id="home-featured-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Rendered dynamically by app.js with images from d:\DOWNLOADS\luxignia -->
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS SECTION -->
+      <section class="max-w-7xl mx-auto px-6 lg:px-12 py-16 border-t border-subtle">
+        <div class="bg-forest-deep text-white rounded-3xl p-10 lg:p-16 relative overflow-hidden">
+          <div class="max-w-2xl relative z-10">
+            <span class="badge-gold mb-4">Patron Provenance</span>
+            <h2 class="display-lg text-white mb-6">Words from our Patrons</h2>
+            <div class="space-y-6">
+              <div class="p-6 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md">
+                <p class="font-serif italic text-lg text-gray-200 mb-4">
+                  "The Aurelius Stallion commands our Munich salon with an aura that photographs can scarcely convey. The craftsmanship and Vastu precision are unmatched."
+                </p>
+                <div class="flex items-center justify-between text-xs">
+                  <div>
+                    <div class="font-bold text-gold-bright">High Duchess Sophia von Rose</div>
+                    <div class="text-gray-400">Patron of the Arts, Munich</div>
+                  </div>
+                  <span class="text-gold-antique">★★★★★</span>
+                </div>
+              </div>
+
+              <div class="p-6 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md">
+                <p class="font-serif italic text-lg text-gray-200 mb-4">
+                  "Luxignia creates heirloom pieces that transcend modern trends. Their private concierge service was immaculate from consultation to installation."
+                </p>
+                <div class="flex items-center justify-between text-xs">
+                  <div>
+                    <div class="font-bold text-gold-bright">Lord Alistair Sterling</div>
+                    <div class="text-gray-400">Belgravia, London</div>
+                  </div>
+                  <span class="text-gold-antique">★★★★★</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EDITORIAL FOOTER -->
+      <footer class="bg-forest-deep text-white mt-20 pt-16 pb-12 border-t border-gold">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
+            <!-- Brand Column -->
+            <div class="lg:col-span-2">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="material-symbols-outlined text-gold-antique text-3xl">spa</span>
+                <span class="font-serif text-2xl font-bold tracking-tight text-white">Luxignia</span>
+              </div>
+              <p class="text-xs text-gray-300 max-w-sm mb-6 leading-relaxed">
+                Artisanal luxury statement décor, astronomical horology, and sacred Vastu masterpieces crafted for heirloom residences and private estates worldwide.
+              </p>
+              <div class="text-xs text-gold-bright font-semibold">
+                Mayfair • Worli Sea Face • Lutyens • Paris Salon
+              </div>
+            </div>
+
+            <!-- Links 1 -->
+            <div>
+              <h4 class="font-serif font-bold text-sm text-gold-antique mb-4 uppercase tracking-wider">Collections</h4>
+              <ul class="space-y-2 text-xs text-gray-300">
+                <li><a href="#" onclick="window.app.filterByCategory('Sculptures'); return false;" class="hover:text-gold-bright">Monumental Sculptures</a></li>
+                <li><a href="#" onclick="window.app.filterByCategory('Clocks'); return false;" class="hover:text-gold-bright">Astronomical Clocks</a></li>
+                <li><a href="#" onclick="window.app.filterByCategory('Vastu Masterpieces'); return false;" class="hover:text-gold-bright">Vastu Masterpieces</a></li>
+                <li><a href="#" onclick="window.app.filterByCategory('Gifting'); return false;" class="hover:text-gold-bright">Executive Gifting</a></li>
+                <li><a href="#" onclick="window.app.filterByCategory('Curated Vases & Vessels'); return false;" class="hover:text-gold-bright">Vases & Vessels</a></li>
+              </ul>
+            </div>
+
+            <!-- Links 2 -->
+            <div>
+              <h4 class="font-serif font-bold text-sm text-gold-antique mb-4 uppercase tracking-wider">Provenance</h4>
+              <ul class="space-y-2 text-xs text-gray-300">
+                <li><a href="#" data-path="about" class="hover:text-gold-bright">Atelier Heritage</a></li>
+                <li><a href="#" data-path="vastu" class="hover:text-gold-bright">Vastu Directional Science</a></li>
+                <li><a href="#" data-path="salon" class="hover:text-gold-bright">VIP Patron Vault</a></li>
+                <li><a href="#" onclick="window.app.openShowroomModal(); return false;" class="hover:text-gold-bright">Showroom Appointments</a></li>
+                <li><a href="#" data-path="contact" class="hover:text-gold-bright">Private Concierge Desk</a></li>
+              </ul>
+            </div>
+
+            <!-- Links 3: Client Area -->
+            <div>
+              <h4 class="font-serif font-bold text-sm text-gold-antique mb-4 uppercase tracking-wider">Client Access</h4>
+              <ul class="space-y-2 text-xs text-gray-300">
+                <li><a href="#" onclick="window.app.openAuthModal('login'); return false;" class="hover:text-gold-bright">Patron Sign In</a></li>
+                <li><a href="#" onclick="window.app.openAuthModal('register'); return false;" class="hover:text-gold-bright">Request Membership</a></li>
+                <li><a href="#" data-path="dashboard" class="hover:text-gold-bright">My Account Portal</a></li>
+                <li><a href="#" data-path="crm" class="hover:text-gold-bright text-gold-bright">Executive CRM</a></li>
+                <li><a href="#" data-path="admin" class="hover:text-gold-bright text-purple-300">Administrator Console</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-gray-400">
+            <div>&copy; 2026 Luxignia Artisanal Living Ltd. All rights reserved. Directional Vastu Certified.</div>
+            <div class="flex items-center gap-6 mt-4 md:mt-0">
+              <span>Encrypted SSL Private Checkout</span>
+              <span>•</span>
+              <span>White-Glove Insured Freight</span>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ---------------- PAGE 2: ABOUT ATELIER VIEW ---------------- -->
+    <section id="view-about" class="app-view" style="display:none;">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+        <div class="max-w-3xl mb-16">
+          <span class="label-sm text-gold-antique">Atelier Provenance</span>
+          <h1 class="display-lg mt-2 mb-6">Born from Ancient Geometry & Master Foundry Craft.</h1>
+          <p class="body-lg">
+            Luxignia was established to restore classical gravitas and sacred architectural harmony to modern interior spaces. Every artifact is forged in limited editions of five to ten pieces, utilizing lost-wax bronze casting, hand-gilded 24K gold leaf, and precision horological movements.
+          </p>
+        </div>
+
+        <!-- Pillar Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div class="luxury-card p-8 bg-white">
+            <span class="material-symbols-outlined text-gold-bright text-3xl mb-4">handyman</span>
+            <h3 class="font-serif font-bold text-xl text-primary mb-2">Master Metalsmithing</h3>
+            <p class="text-xs text-muted leading-relaxed">
+              Our foundry sculptors employ centuries-old French lost-wax methods, finishing each piece with hand-burnished patinas and pure 24K gold leaf foils that age with timeless distinction.
+            </p>
+          </div>
+
+          <div class="luxury-card p-8 bg-white">
+            <span class="material-symbols-outlined text-gold-bright text-3xl mb-4">explore</span>
+            <h3 class="font-serif font-bold text-xl text-primary mb-2">Vastu Directional Science</h3>
+            <p class="text-xs text-muted leading-relaxed">
+              Every curve, mass, and material is calibrated per directional energetic axes (Kubera North-East, Solar East, Brahmasthan) to channel prosperity, focus, and enduring tranquility.
+            </p>
+          </div>
+
+          <div class="luxury-card p-8 bg-white">
+            <span class="material-symbols-outlined text-gold-bright text-3xl mb-4">verified</span>
+            <h3 class="font-serif font-bold text-xl text-primary mb-2">Signed Provenance</h3>
+            <p class="text-xs text-muted leading-relaxed">
+              Accompanied by hand-engraved solid copper plaques and digital ledger certificates. Delivered by dedicated security teams directly to your estate mantle.
+            </p>
+          </div>
+        </div>
+
+        <!-- Global Salons -->
+        <div class="bg-surface-linen rounded-3xl p-10 border border-subtle">
+          <div class="text-center max-w-xl mx-auto mb-10">
+            <span class="label-sm text-gold-antique">Private Viewings</span>
+            <h2 class="headline-xl mt-1">Our International Salons</h2>
+            <p class="text-xs text-muted mt-2">Appointments reserved exclusively for registered patrons and commissioned curators.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div class="p-6 bg-white rounded-2xl border border-subtle">
+              <h4 class="font-serif font-bold text-lg text-primary">Mayfair Vault</h4>
+              <p class="text-xs text-gold-antique font-semibold mb-2">London, United Kingdom</p>
+              <p class="text-xs text-muted">28 Berkeley Square, Mayfair</p>
+              <p class="text-[11px] text-gray-400 mt-2">Private Curators: Eleanor Vance</p>
+            </div>
+
+            <div class="p-6 bg-white rounded-2xl border border-subtle">
+              <h4 class="font-serif font-bold text-lg text-primary">Worli Sea Face Gallery</h4>
+              <p class="text-xs text-gold-antique font-semibold mb-2">Mumbai, India</p>
+              <p class="text-xs text-muted">Imperial Promenade, Worli Sea Face</p>
+              <p class="text-[11px] text-gray-400 mt-2">Private Curators: Vikramaditya Roy</p>
+            </div>
+
+            <div class="p-6 bg-white rounded-2xl border border-subtle">
+              <h4 class="font-serif font-bold text-lg text-primary">Place Vendôme Salon</h4>
+              <p class="text-xs text-gold-antique font-semibold mb-2">Paris, France</p>
+              <p class="text-xs text-muted">14 Place Vendôme, 75001 Paris</p>
+              <p class="text-[11px] text-gray-400 mt-2">Private Curators: Julian Moreau</p>
+            </div>
+          </div>
+
+          <div class="text-center mt-8">
+            <button onclick="window.app.openShowroomModal()" class="btn-primary">
+              <span>Book Salon Reception</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------- PAGE 3: SHOP / CATALOG VIEW ---------------- -->
+    <section id="view-shop" class="app-view" style="display:none;">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-8">
+        
+        <!-- Header & Search -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+          <div>
+            <span class="label-sm text-gold-antique">Catalog Archive</span>
+            <h2 class="headline-xl mt-1">Artisanal Statement Pieces</h2>
+          </div>
+
+          <!-- Search Input -->
+          <div class="relative w-full md:w-80">
+            <input type="text" id="catalog-search" placeholder="Search sculptures, clocks, Vastu..." class="w-full bg-white border border-subtle rounded-lg px-4 py-2.5 text-xs text-primary focus:outline-none focus:border-primary pl-10">
+            <span class="material-symbols-outlined absolute left-3 top-2.5 text-gray-400 text-[18px]">search</span>
+          </div>
+        </div>
+
+        <!-- Filters Row -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-10 pb-6 border-b border-subtle">
+          <!-- Category Pills -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button data-category-filter="All" class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-forest-brand text-white">All Artifacts</button>
+            <button data-category-filter="Sculptures" class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-surface-muted text-primary hover:bg-forest-brand hover:text-white transition-colors">Sculptures</button>
+            <button data-category-filter="Clocks" class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-surface-muted text-primary hover:bg-forest-brand hover:text-white transition-colors">Astronomical Clocks</button>
+            <button data-category-filter="Vastu Masterpieces" class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-surface-muted text-primary hover:bg-forest-brand hover:text-white transition-colors">Vastu Masterpieces</button>
+            <button data-category-filter="Gifting" class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-surface-muted text-primary hover:bg-forest-brand hover:text-white transition-colors">Executive Gifting</button>
+            <button data-category-filter="Curated Vases & Vessels" class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider bg-surface-muted text-primary hover:bg-forest-brand hover:text-white transition-colors">Vases & Vessels</button>
+          </div>
+
+          <!-- Vastu Direction Filters & Sort Dropdown -->
+          <div class="flex flex-wrap items-center gap-4 text-xs">
+            <div class="flex items-center gap-1.5">
+              <span class="font-bold text-muted uppercase">Vastu:</span>
+              <button data-vastu-filter="North-East" class="px-3 py-1 rounded border border-subtle text-xs font-semibold hover:border-gold">North-East</button>
+              <button data-vastu-filter="North-West" class="px-3 py-1 rounded border border-subtle text-xs font-semibold hover:border-gold">North-West</button>
+              <button data-vastu-filter="East" class="px-3 py-1 rounded border border-subtle text-xs font-semibold hover:border-gold">East</button>
+              <button data-vastu-filter="Center" class="px-3 py-1 rounded border border-subtle text-xs font-semibold hover:border-gold">Center</button>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <span class="font-bold text-muted uppercase">Sort:</span>
+              <select id="catalog-sort" onchange="window.app.handleSortChange(this.value)" class="bg-white border border-subtle rounded px-2.5 py-1 text-xs text-primary font-semibold">
+                <option value="featured">Featured First</option>
+                <option value="price_asc">Price: Low to High</option>
+                <option value="price_desc">Price: High to Low</option>
+                <option value="rating">Highest Rated</option>
+                <option value="newest">Newest Artifacts</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Catalog Grid -->
+        <div id="catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Dynamically Rendered by app.js with real images from d:\DOWNLOADS\luxignia -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------- PAGE 4: GIFTING SUITE ---------------- -->
+    <section id="view-gifting" class="app-view" style="display:none;">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+        <div class="bg-forest-deep text-white rounded-3xl p-10 lg:p-16 relative overflow-hidden mb-12">
+          <div class="max-w-xl z-10 relative">
+            <span class="badge-gold mb-4">Corporate & Family Heirloom Gifting</span>
+            <h2 class="display-lg text-white mb-6">Bespoke Executive Gifting & Wedding Curation</h2>
+            <p class="body-lg text-gray-300 mb-8">
+              Curated luxury artifacts presented in mahogany cases with custom engraved brass provenance plaques, Vastu certifications, and personal calligraphic letters.
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <button onclick="window.app.openGiftingEnquiryModal()" class="btn-gold">
+                <span>Request Gifting Portfolio</span>
+              </button>
+              <button onclick="window.app.filterByCategory('Gifting'); window.app.switchView('shop');" class="btn-outline text-white border-white hover:bg-white hover:text-forest-brand">
+                <span>View Gifting Artifacts</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gifting Features -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="p-8 bg-white rounded-2xl border border-subtle">
+            <h3 class="font-serif font-bold text-lg text-primary mb-2">Mahogany Presentation Cases</h3>
+            <p class="text-xs text-muted">Solid mahogany boxes lined with plush emerald velvet and solid brass hardware hinges.</p>
+          </div>
+          <div class="p-8 bg-white rounded-2xl border border-subtle">
+            <h3 class="font-serif font-bold text-lg text-primary">Engraved Copper Provenance</h3>
+            <p class="text-xs text-muted">Custom plaques commemorating inaugural boardrooms, landmark acquisitions, and family milestones.</p>
+          </div>
+          <div class="p-8 bg-white rounded-2xl border border-subtle">
+            <h3 class="font-serif font-bold text-lg text-primary">White-Glove Pan-India Dispatch</h3>
+            <p class="text-xs text-muted">Direct climate-controlled courier with VIP unpackaging and placement supervision.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------- PAGE 5: VASTU & ENERGY GUIDE ---------------- -->
+    <section id="view-vastu" class="app-view" style="display:none;">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <span class="label-sm text-gold-antique">Ancient Spatial Science</span>
+          <h2 class="headline-xl mt-2">Vastu Directional & Energy Alignment Guide</h2>
+          <p class="body-lg mt-3">Every Luxignia piece is mathematically proportioned and certified for specific directional zones to maximize spatial harmony, prosperity, and peace.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div class="p-6 bg-white rounded-xl border border-gold hover:shadow-md transition-shadow">
+            <span class="vastu-pill mb-3 inline-block">North-East Zone</span>
+            <h4 class="font-serif text-lg font-bold text-primary mb-2">Kubera & Wealth Attraction</h4>
+            <p class="text-xs text-muted">Ideal for Gilded Stallion & Water elements. Enhances financial vitality, executive clarity, and boundless opportunity.</p>
+            <button onclick="window.app.filterByVastu('North-East'); window.app.switchView('shop');" class="text-xs font-bold text-gold-antique hover:text-primary mt-4 inline-flex items-center gap-1">
+              <span>View Matching Artifacts</span> &rarr;
+            </button>
+          </div>
+
+          <div class="p-6 bg-white rounded-xl border border-gold hover:shadow-md transition-shadow">
+            <span class="vastu-pill mb-3 inline-block">North-West Zone</span>
+            <h4 class="font-serif text-lg font-bold text-primary mb-2">Precision & Time Flow</h4>
+            <p class="text-xs text-muted">Ideal for Astronomical Pendulum Clocks. Promotes timely project execution, peaceful partnerships, and agile movements.</p>
+            <button onclick="window.app.filterByVastu('North-West'); window.app.switchView('shop');" class="text-xs font-bold text-gold-antique hover:text-primary mt-4 inline-flex items-center gap-1">
+              <span>View Matching Artifacts</span> &rarr;
+            </button>
+          </div>
+
+          <div class="p-6 bg-white rounded-xl border border-gold hover:shadow-md transition-shadow">
+            <span class="vastu-pill mb-3 inline-block">East Zone</span>
+            <h4 class="font-serif text-lg font-bold text-primary mb-2">Solar Ambition & Health</h4>
+            <p class="text-xs text-muted">Ideal for Sunburst Astrolabes & Gilded brass dials. Invites solar vitality, high public standing, and radiant well-being.</p>
+            <button onclick="window.app.filterByVastu('East'); window.app.switchView('shop');" class="text-xs font-bold text-gold-antique hover:text-primary mt-4 inline-flex items-center gap-1">
+              <span>View Matching Artifacts</span> &rarr;
+            </button>
+          </div>
+
+          <div class="p-6 bg-white rounded-xl border border-gold hover:shadow-md transition-shadow">
+            <span class="vastu-pill mb-3 inline-block">Center (Brahmasthan)</span>
+            <h4 class="font-serif text-lg font-bold text-primary mb-2">Spatial Focus & Balance</h4>
+            <p class="text-xs text-muted">Ideal for Sacred Geometry Obelisks & Emerald cores. Acts as an energy channel anchor for grand foyers and penthouses.</p>
+            <button onclick="window.app.filterByVastu('Center'); window.app.switchView('shop');" class="text-xs font-bold text-gold-antique hover:text-primary mt-4 inline-flex items-center gap-1">
+              <span>View Matching Artifacts</span> &rarr;
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------- PAGE 6: VIP SALON VAULT ---------------- -->
+    <section id="view-salon" class="app-view" style="display:none;">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-16 text-center">
+        <span class="label-sm text-gold-antique">By Private Invitation Only</span>
+        <h2 class="headline-xl mt-2 mb-4">Patron Vault — VIP Private Salon Access</h2>
+        <p class="body-lg max-w-xl mx-auto mb-8">Exclusive access to unreleased master sculptures, museum-grade 1-of-1 commissions, and private concierge auctions.</p>
+        <button onclick="window.app.openAuthModal('register')" class="btn-primary">
+          <span>Apply for Vault Membership</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ---------------- PAGE 7: CONTACT US VIEW ---------------- -->
+    <section id="view-contact" class="app-view" style="display:none;">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <!-- Left Column: Contact Form -->
+          <div class="lg:col-span-7 bg-white p-8 lg:p-12 rounded-3xl border border-subtle shadow-sm">
+            <span class="label-sm text-gold-antique">Private Concierge Desk</span>
+            <h2 class="headline-xl mt-1 mb-4">Initiate a Curatorial Inquiry</h2>
+            <p class="text-xs text-muted mb-8">Every message is answered directly by our senior curatorial directors within 24 hours.</p>
+
+            <form id="form-contact-page" class="space-y-4 text-xs">
+              <div>
+                <label class="block font-bold text-muted mb-1">Patron Full Name</label>
+                <input type="text" name="name" required placeholder="Lord / Dr. / Ms. Name" class="input-luxury">
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block font-bold text-muted mb-1">Email Address</label>
+                  <input type="email" name="email" required placeholder="patron@domain.com" class="input-luxury">
+                </div>
+                <div>
+                  <label class="block font-bold text-muted mb-1">Phone Number</label>
+                  <input type="tel" name="phone" placeholder="+1 (555) 000-0000" class="input-luxury">
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-bold text-muted mb-1">Inquiry Subject / Area of Interest</label>
+                <input type="text" name="subject" placeholder="e.g. Penthouse Vastu Curation & Bespoke Bronze" class="input-luxury">
+              </div>
+
+              <div>
+                <label class="block font-bold text-muted mb-1">Detailed Message / Architectural Specifications</label>
+                <textarea name="message" required rows="4" placeholder="Describe your room dimensions, desired materials, or gifting timeline..." class="input-luxury"></textarea>
+              </div>
+
+              <button type="submit" class="btn-primary w-full justify-center py-3.5 text-xs">
+                <span>Dispatch Inquiry to Concierge</span>
+                <span class="material-symbols-outlined text-[16px]">send</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Right Column: Salon Directory -->
+          <div class="lg:col-span-5 flex flex-col justify-between space-y-6">
+            <div class="p-8 bg-surface-linen rounded-3xl border border-subtle">
+              <h3 class="font-serif font-bold text-xl text-primary mb-4">Global Salons</h3>
+              <div class="space-y-4 text-xs">
+                <div>
+                  <div class="font-bold text-primary">London Mayfair Private Vault</div>
+                  <div class="text-muted">28 Berkeley Square, Mayfair, London W1J 6EN</div>
+                  <div class="text-gold-antique font-semibold">+44 20 7946 0999</div>
+                </div>
+                <div class="border-t border-subtle pt-3">
+                  <div class="font-bold text-primary">Mumbai Flagship Gallery</div>
+                  <div class="text-muted">Imperial Promenade, Worli Sea Face, Mumbai 400018</div>
+                  <div class="text-gold-antique font-semibold">+91 22 6123 4567</div>
+                </div>
+                <div class="border-t border-subtle pt-3">
+                  <div class="font-bold text-primary">Delhi Private Salon</div>
+                  <div class="text-muted">Amrita Shergill Marg, Lutyens Estate, New Delhi 110003</div>
+                  <div class="text-gold-antique font-semibold">+91 11 4123 8899</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-8 bg-forest-deep text-white rounded-3xl">
+              <span class="badge-gold mb-3">Direct Phone Access</span>
+              <h4 class="font-serif font-bold text-lg text-white mb-2">Private Client Line</h4>
+              <p class="text-xs text-gray-300 mb-4">Available 24 hours for registered patrons seeking emergency logistics assistance.</p>
+              <div class="font-mono text-gold-bright text-lg font-bold">+1 (800) LUX-VAULT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------- PAGE 8: AUTHENTICATION VIEWS ---------------- -->
+    <section id="view-login" class="app-view" style="display:none;">
+      <div class="max-w-md mx-auto px-6 py-16">
+        <div class="bg-white p-8 rounded-3xl border border-subtle shadow-sm">
+          <div class="text-center mb-6">
+            <span class="material-symbols-outlined text-gold-antique text-3xl">lock</span>
+            <h2 class="font-serif text-2xl font-bold text-primary mt-2">Sign In to Luxignia</h2>
+            <p class="text-xs text-muted mt-1">Access your private acquisitions, enquiries, and concierge vault.</p>
+          </div>
+
+          <form id="form-page-login" class="space-y-4 text-xs">
+            <div id="login-error-banner" class="hidden p-3 rounded-lg bg-red-50 text-red-700 text-xs font-semibold"></div>
+            <div>
+              <label class="block font-bold text-muted mb-1">Email Address</label>
+              <input type="email" name="email" required placeholder="patron@luxignia.com" class="input-luxury">
+            </div>
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <label class="font-bold text-muted">Password</label>
+                <a href="#" onclick="window.app.switchView('forgot-password'); return false;" class="text-[11px] text-gold-antique hover:underline">Forgot password?</a>
+              </div>
+              <input type="password" name="password" required placeholder="••••••••" class="input-luxury">
+            </div>
+
+            <button type="submit" class="btn-primary w-full justify-center py-3 text-xs">
+              <span>Sign In Securely</span>
+            </button>
+          </form>
+
+          <div class="mt-6 text-center text-xs text-muted">
+            <span>Do not have a private account?</span>
+            <a href="#" onclick="window.app.switchView('register'); return false;" class="font-bold text-primary hover:text-gold-antique underline ml-1">Request Patron Membership</a>
+          </div>
+
+          <div class="mt-6 p-3 bg-surface-linen rounded-xl border border-subtle text-[11px] text-muted space-y-1">
+            <div class="font-bold text-primary">Pre-configured Accounts:</div>
+            <div>• Super Admin: <span class="font-mono text-primary font-semibold">admin@luxignia.com</span> / <span class="font-mono text-primary">LuxigniaAdmin2026!</span></div>
+            <div>• Curator Staff: <span class="font-mono text-primary font-semibold">curator@luxignia.com</span> / <span class="font-mono text-primary">Curator2026!</span></div>
+            <div>• Patron Customer: <span class="font-mono text-primary font-semibold">patron@luxignia.com</span> / <span class="font-mono text-primary">Patron2026!</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-register" class="app-view" style="display:none;">
+      <div class="max-w-md mx-auto px-6 py-16">
+        <div class="bg-white p-8 rounded-3xl border border-subtle shadow-sm">
+          <div class="text-center mb-6">
+            <span class="material-symbols-outlined text-gold-antique text-3xl">verified_user</span>
+            <h2 class="font-serif text-2xl font-bold text-primary mt-2">Request Patron Membership</h2>
+            <p class="text-xs text-muted mt-1">Join our circle of connoisseurs, architects, and private collectors.</p>
+          </div>
+
+          <form id="form-page-register" class="space-y-3 text-xs">
+            <div id="register-error-banner" class="hidden p-3 rounded-lg bg-red-50 text-red-700 text-xs font-semibold"></div>
+            <div>
+              <label class="block font-bold text-muted mb-1">Full Name & Title</label>
+              <input type="text" name="name" required placeholder="Lord / Dr. / Lady / Name" class="input-luxury">
+            </div>
+            <div>
+              <label class="block font-bold text-muted mb-1">Email Address</label>
+              <input type="email" name="email" required placeholder="patron@domain.com" class="input-luxury">
+            </div>
+            <div>
+              <label class="block font-bold text-muted mb-1">Phone Number</label>
+              <input type="tel" name="phone" placeholder="+1 (555) 000-0000" class="input-luxury">
+            </div>
+            <div>
+              <label class="block font-bold text-muted mb-1">Password</label>
+              <input type="password" name="password" required minlength="6" placeholder="At least 6 characters" class="input-luxury">
+            </div>
+            <div>
+              <label class="block font-bold text-muted mb-1">Confirm Password</label>
+              <input type="password" name="confirmPassword" required minlength="6" placeholder="Repeat password" class="input-luxury">
+            </div>
+            <div>
+              <label class="block font-bold text-muted mb-1">Vault / Estate Address</label>
+              <textarea name="address" rows="2" placeholder="Full residence or penthouse delivery address..." class="input-luxury"></textarea>
+            </div>
+
+            <button type="submit" class="btn-gold w-full justify-center py-3 text-xs mt-2">
+              <span>Activate Membership</span>
+            </button>
+          </form>
+
+          <div class="mt-6 text-center text-xs text-muted">
+            <span>Already have an account?</span>
+            <a href="#" onclick="window.app.switchView('login'); return false;" class="font-bold text-primary hover:text-gold-antique underline ml-1">Sign In</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-forgot-password" class="app-view" style="display:none;">
+      <div class="max-w-md mx-auto px-6 py-16">
+        <div class="bg-white p-8 rounded-3xl border border-subtle shadow-sm">
+          <div class="text-center mb-6">
+            <span class="material-symbols-outlined text-gold-antique text-3xl">key</span>
+            <h2 class="font-serif text-2xl font-bold text-primary mt-2">Reset Password</h2>
+            <p class="text-xs text-muted mt-1">Provide your email address to receive a secure password reset token.</p>
+          </div>
+
+          <form id="form-page-forgot-password" class="space-y-4 text-xs">
+            <div id="forgot-status-banner" class="hidden p-3 rounded-lg text-xs font-semibold"></div>
+            <div>
+              <label class="block font-bold text-muted mb-1">Registered Email Address</label>
+              <input type="email" name="email" required placeholder="patron@domain.com" class="input-luxury">
+            </div>
+
+            <button type="submit" class="btn-primary w-full justify-center py-3 text-xs">
+              <span>Generate Reset Token</span>
+            </button>
+          </form>
+
+          <!-- Step 2: New Password Form -->
+          <div id="container-reset-step2" class="hidden mt-6 pt-6 border-t border-subtle">
+            <h4 class="font-serif font-bold text-sm text-primary mb-3">Set New Password</h4>
+            <form id="form-page-reset-token" class="space-y-3 text-xs">
+              <div>
+                <label class="block font-bold text-muted mb-1">Security Token</label>
+                <input type="text" name="token" required id="input-reset-token" class="input-luxury font-mono">
+              </div>
+              <div>
+                <label class="block font-bold text-muted mb-1">New Password</label>
+                <input type="password" name="newPassword" required minlength="6" class="input-luxury">
+              </div>
+              <button type="submit" class="btn-gold w-full justify-center py-2.5 text-xs">
+                <span>Update Password</span>
+              </button>
+            </form>
+          </div>
+
+          <div class="mt-6 text-center text-xs text-muted">
+            <a href="#" onclick="window.app.switchView('login'); return false;" class="font-bold text-primary hover:text-gold-antique">&larr; Return to Sign In</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------- PAGE 9: CUSTOMER DASHBOARD / PORTAL ---------------- -->
+    <section id="view-dashboard" class="app-view" style="display:none;">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-8">
+        
+        <!-- Patron Welcome Header -->
+        <div class="p-8 bg-gradient-to-r from-forest-deep to-forest-brand text-white rounded-3xl mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-md">
+          <div>
+            <div class="flex items-center gap-3">
+              <h1 class="display-lg text-white text-3xl md:text-4xl">Welcome, <span id="dash-patron-name">Patron</span></h1>
+              <span class="role-badge role-admin" id="dash-patron-tier">Royal Patron</span>
+            </div>
+            <p class="text-xs text-gray-300 mt-2">Manage your private orders, Vastu placement certifications, and curatorial dialogues.</p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button onclick="window.app.openShowroomModal()" class="btn-gold py-2.5 px-4 text-xs">
+              <span>Book Salon Reception</span>
+            </button>
+            <button onclick="window.app.logout()" class="btn-outline border-white text-white hover:bg-white hover:text-forest-brand py-2.5 px-4 text-xs">
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dashboard Counters -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+          <div class="stat-card">
+            <span class="text-xs font-bold uppercase tracking-wider text-muted">Active Acquisitions</span>
+            <div id="dash-stat-orders" class="val">0</div>
+            <span class="text-[10px] text-muted">White-Glove Dispatches</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="text-xs font-bold uppercase tracking-wider text-muted">Curatorial Inquiries</span>
+            <div id="dash-stat-enquiries" class="val">0</div>
+            <span class="text-[10px] text-gold-bright font-bold">Concierge Attended</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="text-xs font-bold uppercase tracking-wider text-muted">Saved Artifacts</span>
+            <div id="dash-stat-favorites" class="val">0</div>
+            <span class="text-[10px] text-muted">In Your Private Wishlist</span>
+          </div>
+        </div>
+
+        <!-- Dashboard Tabs Bar -->
+        <div class="flex flex-wrap items-center gap-2 mb-8 p-1.5 bg-surface-muted rounded-xl border border-subtle">
+          <button onclick="window.app.switchDashboardTab('overview')" id="dash-tab-btn-overview" class="luxury-tab-btn active">Overview</button>
+          <button onclick="window.app.switchDashboardTab('orders')" id="dash-tab-btn-orders" class="luxury-tab-btn">My Acquisitions</button>
+          <button onclick="window.app.switchDashboardTab('enquiries')" id="dash-tab-btn-enquiries" class="luxury-tab-btn">My Inquiries</button>
+          <button onclick="window.app.switchDashboardTab('favorites')" id="dash-tab-btn-favorites" class="luxury-tab-btn">Saved Artifacts</button>
+          <button onclick="window.app.switchDashboardTab('profile')" id="dash-tab-btn-profile" class="luxury-tab-btn">Profile & Vault Address</button>
+          <button onclick="window.app.switchDashboardTab('notifications')" id="dash-tab-btn-notifications" class="luxury-tab-btn">Notifications</button>
+        </div>
+
+        <!-- Dashboard Content Panels -->
+        <div id="dashboard-tab-content">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ---------------- PAGE 10: CRM & EXECUTIVE PORTAL ---------------- -->
+    <section id="view-crm" class="app-view" style="display:none;">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-8">
+        
+        <!-- CRM Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-subtle">
+          <div>
+            <div class="flex items-center gap-3">
+              <h2 class="headline-xl">Luxignia Executive CRM & Sales Portal</h2>
+              <span class="admin-badge">Live System</span>
+            </div>
+            <p class="text-xs text-muted mt-1">Real-time pipeline analytics, high-value patron orders, product inventory, and salon bookings.</p>
+          </div>
+
+          <!-- CRM Navigation Tabs -->
+          <div class="flex flex-wrap items-center gap-1.5 bg-surface-muted p-1.5 rounded-xl border border-subtle">
+            <button data-crm-tab="leads" class="luxury-tab-btn active">Leads Pipeline</button>
+            <button data-crm-tab="customers" class="luxury-tab-btn">Customer Archive</button>
+            <button data-crm-tab="enquiries" class="luxury-tab-btn">Enquiry Desk</button>
+            <button data-crm-tab="orders" class="luxury-tab-btn">Orders & Deliveries</button>
+            <button data-crm-tab="products" class="luxury-tab-btn">Catalog Inventory</button>
+            <button data-crm-tab="visits" class="luxury-tab-btn">Showroom Visits</button>
+            <button data-crm-tab="activity" class="luxury-tab-btn">Audit Log</button>
+          </div>
+        </div>
+
+        <!-- Dashboard KPI Bar -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div class="stat-card">
+            <span class="text-xs font-bold uppercase tracking-wider text-muted">Total Gross Revenue</span>
+            <div id="crm-stat-revenue" class="val">$0</div>
+            <span class="text-[10px] text-green-700 font-bold">+18.4% vs target</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="text-xs font-bold uppercase tracking-wider text-muted">Completed Orders</span>
+            <div id="crm-stat-orders" class="val">0</div>
+            <span class="text-[10px] text-muted">White-Glove Dispatched</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="text-xs font-bold uppercase tracking-wider text-muted">Active HNW Leads</span>
+            <div id="crm-stat-leads" class="val">0</div>
+            <span class="text-[10px] text-gold-bright font-bold">High Priority Consults</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="text-xs font-bold uppercase tracking-wider text-muted">Lead Conversion Rate</span>
+            <div id="crm-stat-conv" class="val">0%</div>
+            <span class="text-[10px] text-green-700 font-bold">Above Target (25%)</span>
+          </div>
+        </div>
+
+        <!-- Tab Content Container -->
+        <div id="crm-tab-content">
+          <!-- Rendered dynamically by crm.js -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ---------------- PAGE 11: ADMIN PANEL ---------------- -->
+    <section id="view-admin" class="app-view" style="display:none;">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-8">
+        
+        <!-- Admin Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-subtle">
+          <div>
+            <div class="flex items-center gap-3">
+              <h2 class="headline-xl">System Administration Console</h2>
+              <span class="role-badge role-super_admin">Super Administrator</span>
+            </div>
+            <p class="text-xs text-muted mt-1">Role-based access control, user accounts, category hierarchies, and CMS editorial management.</p>
+          </div>
+
+          <!-- Admin Navigation Tabs -->
+          <div class="flex flex-wrap items-center gap-1.5 bg-surface-muted p-1.5 rounded-xl border border-subtle">
+            <button data-admin-tab="users" class="luxury-tab-btn active">User Accounts</button>
+            <button data-admin-tab="categories" class="luxury-tab-btn">Categories</button>
+            <button data-admin-tab="content" class="luxury-tab-btn">Content CMS</button>
+            <button data-admin-tab="system" class="luxury-tab-btn">System Health</button>
+          </div>
+        </div>
+
+        <!-- Admin Tab Content Container -->
+        <div id="admin-tab-content">
+          <!-- Rendered dynamically by crm.js / app.js -->
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= SLIDE-OVER CART DRAWER ================= -->
+  <div id="drawer-cart" class="drawer-overlay" onclick="if(event.target === this) window.app.closeCartDrawer();">
+    <div class="drawer-panel">
+      <!-- Header -->
+      <div class="p-6 border-b border-subtle flex items-center justify-between bg-surface-linen">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-gold-bright text-xl">shopping_bag</span>
+          <h3 class="font-serif font-bold text-lg text-primary">Acquisition Bag</h3>
+        </div>
+        <button onclick="window.app.closeCartDrawer()" class="p-1 text-muted hover:text-primary">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Item List -->
+      <div id="cart-drawer-items" class="p-6 flex-grow overflow-y-auto">
+        <!-- Rendered by app.js -->
+      </div>
+
+      <!-- Footer -->
+      <div class="p-6 border-t border-subtle bg-surface-linen flex flex-col gap-4">
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-muted uppercase tracking-wider text-xs font-bold">Total Investment:</span>
+          <span id="cart-drawer-total" class="font-serif font-bold text-2xl text-primary">$0</span>
+        </div>
+
+        <button onclick="window.app.openCheckoutModal()" class="btn-primary w-full py-3.5 text-center justify-center">
+          <span>Proceed to Private Checkout</span>
+          <span class="material-symbols-outlined text-[18px]">lock</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 3D PRODUCT STUDIO INSPECTOR MODAL ================= -->
+  <div id="modal-3d-studio" class="modal-overlay" onclick="if(event.target === this) window.app.closeModal('modal-3d-studio');">
+    <div class="modal-content">
+      <div class="p-6 border-b border-subtle flex items-center justify-between bg-surface-linen">
+        <div class="flex items-center gap-2">
+          <span class="badge-gold">Interactive 3D Studio</span>
+          <span id="studio-title" class="font-serif font-bold text-lg text-primary">Artifact Inspection</span>
+        </div>
+        <button onclick="window.app.closeModal('modal-3d-studio')" class="p-1 text-muted hover:text-primary">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 lg:p-8">
+        <!-- 3D Canvas Column -->
+        <div class="lg:col-span-7 bg-gradient-to-b from-surface-linen to-surface-muted rounded-2xl p-4 border border-gold flex flex-col justify-between">
+          <div id="studio-threejs-container" class="three-viewport h-[420px]" data-cursor="3d"></div>
+          
+          <!-- Controls Toolbar -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-subtle">
+            <div class="flex items-center gap-2 text-xs">
+              <span class="font-bold text-muted">Material Finish:</span>
+              <button onclick="window.luxEngine.activeStudioInstance?.setMaterial(0xdfb15b)" class="w-6 h-6 rounded-full bg-[#dfb15b] border border-gold" title="24K Gold Leaf"></button>
+              <button onclick="window.luxEngine.activeStudioInstance?.setMaterial(0xb38634)" class="w-6 h-6 rounded-full bg-[#b38634] border border-gold" title="Burnished Brass"></button>
+              <button onclick="window.luxEngine.activeStudioInstance?.setMaterial(0xf8f7f4)" class="w-6 h-6 rounded-full bg-[#f8f7f4] border border-gray-300" title="Carrara Marble"></button>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="window.luxEngine.activeStudioInstance?.toggleAutoOrbit()" class="btn-outline py-1 px-3 text-[10px]">Toggle Orbit</button>
+              <button onclick="window.luxEngine.activeStudioInstance?.resetView()" class="btn-outline py-1 px-3 text-[10px]">Reset View</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spec Breakdown Column -->
+        <div class="lg:col-span-5 flex flex-col justify-between">
+          <div>
+            <span id="studio-subtitle" class="text-xs text-gold-bright font-bold uppercase tracking-wider">Subheading</span>
+            <div class="flex items-center justify-between mt-2 mb-4">
+              <span id="studio-price" class="font-serif text-3xl font-bold text-primary">$0</span>
+              <span id="studio-vastu" class="vastu-pill">Vastu Zone</span>
+            </div>
+
+            <p id="studio-desc" class="text-xs text-muted mb-6 leading-relaxed">Description text...</p>
+
+            <!-- Technical Spec Table -->
+            <div class="space-y-3 p-4 bg-white rounded-xl border border-subtle text-xs mb-6">
+              <div class="flex justify-between border-b border-subtle pb-2">
+                <span class="text-muted">Vastu Energy Benefit:</span>
+                <span id="studio-vastu-benefit" class="font-semibold text-primary">Benefit text</span>
+              </div>
+              <div class="flex justify-between border-b border-subtle pb-2">
+                <span class="text-muted">Material Composition:</span>
+                <span id="studio-material" class="font-semibold text-primary">Materials</span>
+              </div>
+              <div class="flex justify-between border-b border-subtle pb-2">
+                <span class="text-muted">Dimensions:</span>
+                <span id="studio-dimensions" class="font-semibold text-primary">Dimensions</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-muted">Weight:</span>
+                <span id="studio-weight" class="font-semibold text-primary">Weight</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <button id="studio-acquire-btn" class="btn-primary w-full justify-center py-3.5">
+              <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+              <span>Acquire Artifact Now</span>
+            </button>
+            <button id="studio-enquire-btn" class="btn-outline w-full justify-center py-2.5 text-xs">
+              <span class="material-symbols-outlined text-[16px]">mail</span>
+              <span>Inquire With Curatorial Concierge</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= BOOK SHOWROOM VISIT MODAL ================= -->
+  <div id="modal-showroom-visit" class="modal-overlay" onclick="if(event.target === this) window.app.closeModal('modal-showroom-visit');">
+    <div class="modal-content max-w-md p-8">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h3 class="font-serif font-bold text-xl text-primary">Book Private Salon Visit</h3>
+          <p class="text-[11px] text-muted">Champagne reception & directional Vastu mapping.</p>
+        </div>
+        <button onclick="window.app.closeModal('modal-showroom-visit')" class="text-muted hover:text-primary">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="form-showroom-visit" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-muted mb-1">Patron Full Name</label>
+          <input type="text" name="patronName" required placeholder="Lord / Dr. / Ms. Name" class="input-luxury">
+        </div>
+
+        <div>
+          <label class="block font-bold text-muted mb-1">Email Address</label>
+          <input type="email" name="email" required placeholder="patron@domain.com" class="input-luxury">
+        </div>
+
+        <div>
+          <label class="block font-bold text-muted mb-1">Phone Number</label>
+          <input type="tel" name="phone" required placeholder="+1 (555) 000-0000" class="input-luxury">
+        </div>
+
+        <div>
+          <label class="block font-bold text-muted mb-1">Select Showroom Gallery</label>
+          <select name="showroom" class="input-luxury font-semibold">
+            <option>Mumbai Flagship Gallery — Worli Sea Face</option>
+            <option>Delhi Private Salon — Lutyens Estate</option>
+            <option>London Mayfair Private Vault — Berkeley Square</option>
+            <option>Paris Place Vendôme Salon — 75001 Paris</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-muted mb-1">Preferred Date</label>
+            <input type="date" name="date" required class="input-luxury">
+          </div>
+          <div>
+            <label class="block font-bold text-muted mb-1">Time Slot</label>
+            <select name="timeSlot" class="input-luxury">
+              <option>11:00 - 12:30</option>
+              <option>14:00 - 15:30</option>
+              <option>16:30 - 18:00</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-muted mb-1">Requested Service</label>
+          <input type="text" name="requestedService" placeholder="e.g., Full Penthouse Vastu Consultation & Champagne" class="input-luxury">
+        </div>
+
+        <button type="submit" class="btn-gold w-full justify-center py-3 text-xs mt-4">
+          <span>Confirm Salon Reservation</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= BESPOKE CHECKOUT MODAL ================= -->
+  <div id="modal-checkout" class="modal-overlay" onclick="if(event.target === this) window.app.closeModal('modal-checkout');">
+    <div class="modal-content max-w-lg p-8">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h3 class="font-serif font-bold text-xl text-primary">Private Acquisition Checkout</h3>
+          <p class="text-[11px] text-muted">White-Glove Insured Delivery Included</p>
+        </div>
+        <button onclick="window.app.closeModal('modal-checkout')" class="text-muted hover:text-primary">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="form-checkout" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-muted mb-1">Patron Full Name</label>
+          <input type="text" name="patronName" id="checkout-patron-name" required placeholder="Full Name & Title" class="input-luxury">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-muted mb-1">Email</label>
+            <input type="email" name="email" id="checkout-email" required placeholder="email@domain.com" class="input-luxury">
+          </div>
+          <div>
+            <label class="block font-bold text-muted mb-1">Phone</label>
+            <input type="tel" name="phone" id="checkout-phone" required placeholder="+1 555-0199" class="input-luxury">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-muted mb-1">Shipping & Vault Address</label>
+          <textarea name="address" id="checkout-address" required rows="2" placeholder="Full street address, estate, suite, postal code..." class="input-luxury"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-bold text-muted mb-1">Payment Method</label>
+          <select name="paymentMethod" class="input-luxury font-semibold">
+            <option value="Amex Centurion / Black Card">Amex Centurion / Black Card</option>
+            <option value="Concierge Wire Transfer">Concierge Wire Transfer (Invoice Dispatched)</option>
+            <option value="Private Crypto Escrow">Private Crypto Escrow (USDC / BTC)</option>
+          </select>
+        </div>
+
+        <div class="pt-4 border-t border-subtle flex items-center justify-between">
+          <span class="text-xs font-bold text-muted">White-Glove Delivery Fee: FREE</span>
+          <button type="submit" class="btn-primary py-3 px-6 text-xs">
+            <span>Complete Acquisition</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= ORDER SUCCESS MODAL ================= -->
+  <div id="modal-order-success" class="modal-overlay" onclick="if(event.target === this) window.app.closeModal('modal-order-success');">
+    <div class="modal-content max-w-md p-8 text-center">
+      <span class="material-symbols-outlined text-gold-bright text-5xl mb-3">verified</span>
+      <h3 class="font-serif text-2xl font-bold text-primary mb-2">Acquisition Confirmed</h3>
+      <p class="text-xs text-muted mb-4">Thank you. Your order <span id="order-success-number" class="font-mono font-bold text-primary">LUX-2026-0000</span> has been placed under private concierge security supervision.</p>
+      <div class="p-4 bg-surface-linen rounded-xl border border-gold text-xs text-left mb-6 space-y-1">
+        <div class="font-bold text-primary">White-Glove Dispatch Details:</div>
+        <div>• Security tracking code generated</div>
+        <div>• Directional positioning guide included</div>
+        <div>• Signed copper certificate prepared</div>
+      </div>
+      <button onclick="window.app.closeModal('modal-order-success'); window.app.switchView('shop');" class="btn-gold py-3 px-8 text-xs">
+        <span>Return to Catalog</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= COMBINED AUTH MODAL (Login / Register) ================= -->
+  <div id="modal-auth" class="modal-overlay" onclick="if(event.target === this) window.app.closeModal('modal-auth');">
+    <div class="modal-content max-w-md p-8">
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-gold-antique text-2xl">spa</span>
+          <h3 class="font-serif font-bold text-xl text-primary" id="modal-auth-title">Patron Sign In</h3>
+        </div>
+        <button onclick="window.app.closeModal('modal-auth')" class="text-muted hover:text-primary">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Login Tab in Modal -->
+      <div id="auth-modal-login-section">
+        <form id="form-modal-login" class="space-y-4 text-xs">
+          <div id="modal-login-error" class="hidden p-3 rounded bg-red-50 text-red-700 font-semibold"></div>
+          <div>
+            <label class="block font-bold text-muted mb-1">Email Address</label>
+            <input type="email" name="email" required placeholder="patron@luxignia.com" class="input-luxury">
+          </div>
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="font-bold text-muted">Password</label>
+              <a href="#" onclick="window.app.switchModalAuthMode('forgot'); return false;" class="text-[11px] text-gold-antique hover:underline">Forgot?</a>
+            </div>
+            <input type="password" name="password" required placeholder="••••••••" class="input-luxury">
+          </div>
+          <button type="submit" class="btn-primary w-full justify-center py-3 text-xs">
+            <span>Sign In</span>
+          </button>
+        </form>
+
+        <div class="mt-6 text-center text-xs text-muted">
+          <span>New to Luxignia?</span>
+          <button onclick="window.app.switchModalAuthMode('register')" class="font-bold text-primary hover:text-gold-antique underline ml-1">Join as Patron</button>
+        </div>
+      </div>
+
+      <!-- Register Tab in Modal -->
+      <div id="auth-modal-register-section" class="hidden">
+        <form id="form-modal-register" class="space-y-3 text-xs">
+          <div id="modal-register-error" class="hidden p-3 rounded bg-red-50 text-red-700 font-semibold"></div>
+          <div>
+            <label class="block font-bold text-muted mb-1">Full Name & Title</label>
+            <input type="text" name="name" required placeholder="Lord / Dr. / Lady / Name" class="input-luxury">
+          </div>
+          <div>
+            <label class="block font-bold text-muted mb-1">Email Address</label>
+            <input type="email" name="email" required placeholder="patron@domain.com" class="input-luxury">
+          </div>
+          <div>
+            <label class="block font-bold text-muted mb-1">Phone</label>
+            <input type="tel" name="phone" placeholder="+1 (555) 000-0000" class="input-luxury">
+          </div>
+          <div>
+            <label class="block font-bold text-muted mb-1">Password</label>
+            <input type="password" name="password" required minlength="6" placeholder="Min 6 characters" class="input-luxury">
+          </div>
+          <button type="submit" class="btn-gold w-full justify-center py-3 text-xs mt-2">
+            <span>Activate Account</span>
+          </button>
+        </form>
+
+        <div class="mt-6 text-center text-xs text-muted">
+          <span>Already registered?</span>
+          <button onclick="window.app.switchModalAuthMode('login')" class="font-bold text-primary hover:text-gold-antique underline ml-1">Sign In</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= CRM MODALS ================= -->
+  <!-- Add Lead Modal -->
+  <div id="modal-add-lead" class="modal-overlay" onclick="if(event.target === this) window.app.closeModal('modal-add-lead');">
+    <div class="modal-content max-w-md p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="font-serif font-bold text-xl text-primary">Add New VIP Lead to CRM</h3>
+        <button onclick="window.app.closeModal('modal-add-lead')" class="text-muted hover:text-primary">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="form-add-lead" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-muted mb-1">Patron Full Name</label>
+          <input type="text" name="customerName" required placeholder="Lord / Dr. Name" class="input-luxury">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-muted mb-1">Email</label>
+            <input type="email" name="email" required placeholder="email@domain.com" class="input-luxury">
+          </div>
+          <div>
+            <label class="block font-bold text-muted mb-1">Phone</label>
+            <input type="tel" name="phone" placeholder="+1 555..." class="input-luxury">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-muted mb-1">Company / Estate</label>
+            <input type="text" name="company" placeholder="Estate Trust" class="input-luxury">
+          </div>
+          <div>
+            <label class="block font-bold text-muted mb-1">Lead Source</label>
+            <select name="source" class="input-luxury">
+              <option value="Website Contact Form">Website Form</option>
+              <option value="Showroom Private Invitation">Showroom</option>
+              <option value="WhatsApp">WhatsApp</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Referral">Referral</option>
+              <option value="Direct">Direct</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold text-muted mb-1">Interest / Project</label>
+          <input type="text" name="interest" placeholder="e.g. Penthouse Vastu Curation" class="input-luxury">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-muted mb-1">Budget Range</label>
+            <input type="text" name="budget" placeholder="$25,000 - $50,000" class="input-luxury">
+          </div>
+          <div>
+            <label class="block font-bold text-muted mb-1">Priority</label>
+            <select name="priority" class="input-luxury font-semibold">
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="VIP">VIP</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold text-muted mb-1">Notes / Special Requirements</label>
+          <textarea name="notes" rows="2" placeholder="Curator notes..." class="input-luxury"></textarea>
+        </div>
+        <button type="submit" class="btn-primary w-full justify-center py-3 text-xs">Save Lead to Pipeline</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Product Modal (CRM/Admin) -->
+  <div id="modal-add-product" class="modal-overlay" onclick="if(event.target === this) window.app.closeModal('modal-add-product');">
+    <div class="modal-content max-w-lg p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="font-serif font-bold text-xl text-primary">Catalog New Luxury Artifact</h3>
+        <button onclick="window.app.closeModal('modal-add-product')" class="text-muted hover:text-primary">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="form-add-product" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-muted mb-1">Artifact Title</label>
+          <input type="text" name="title" required placeholder="e.g. Aurelius II — Gilded Stallion" class="input-luxury">
+        </div>
+        <div>
+          <label class="block font-bold text-muted mb-1">Subtitle</label>
+          <input type="text" name="subtitle" placeholder="Artisanal Hand-Gilded Masterpiece" class="input-luxury">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-muted mb-1">Price ($)</label>
+            <input type="number" name="price" required placeholder="18500" class="input-luxury font-mono font-bold">
+          </div>
+          <div>
+            <label class="block font-bold text-muted mb-1">Available Stock</label>
+            <input type="number" name="stock" required placeholder="3" class="input-luxury font-bold">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-muted mb-1">Category</label>
+            <select name="category" class="input-luxury font-semibold">
+              <option>Sculptures</option>
+              <option>Clocks</option>
+              <option>Vastu Masterpieces</option>
+              <option>Gifting</option>
+              <option>Curated Vases & Vessels</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-muted mb-1">Vastu Direction</label>
+            <input type="text" name="vastu" placeholder="North-East (Kubera Zone)" class="input-luxury">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-muted mb-1">3D Model Template</label>
+            <select name="model3d_id" class="input-luxury font-semibold">
+              <option value="aurelius">Aurelius Gilded Stallion</option>
+              <option value="odette">Odette Astronomical Clock</option>
+              <option value="ascend">Ascend Sacred Obelisk</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-muted mb-1">Badge</label>
+            <input type="text" name="badge" placeholder="Corner-Office Favourite" class="input-luxury">
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold text-muted mb-1">Product Image URL (from library)</label>
+          <input type="text" name="image" placeholder="/images/products/Elegant Horse Sculpture in Warm Interior.png" class="input-luxury">
+        </div>
+        <div>
+          <label class="block font-bold text-muted mb-1">Editorial Description</label>
+          <textarea name="description" rows="3" placeholder="Artisanal materials, hand gilding details, and provenance..." class="input-luxury"></textarea>
+        </div>
+        <button type="submit" class="btn-gold w-full justify-center py-3 text-xs">Add Artifact to Store</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- APPLICATION SCRIPTS -->
+  <script src="/js/cursor.js"></script>
+  <script src="/js/three-app.js"></script>
+  <script src="/js/crm.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
