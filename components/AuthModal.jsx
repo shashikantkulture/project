@@ -80,8 +80,8 @@ export default function AuthModal() {
           >
             <span className="material-symbols-outlined text-2xl">close</span>
           </button>
-          <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-[#FCF9F3]/10 border border-[#D4AF37]/50 flex items-center justify-center">
-            <span className="material-symbols-outlined text-[#D4AF37] text-2xl">lock</span>
+          <div className="w-16 h-16 mx-auto mb-2 rounded-xl bg-[#0A1C13] border border-[#D4AF37]/40 p-2 flex items-center justify-center shadow-md">
+            <img src="/images/luxignia-logo-gold.png" alt="Luxignia" className="w-full h-full object-contain" />
           </div>
           <h3 className="font-serif text-2xl font-bold tracking-tight text-[#FCF9F3]">
             {authMode === 'login' ? 'Patron Vault Access' : 'Create Patron Account'}

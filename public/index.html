@@ -25,19 +25,25 @@
     <div class="absolute bottom-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#C5A059]/40 to-transparent"></div>
 
     <div class="relative z-10 flex flex-col items-center text-center px-6 max-w-md w-full">
-      <!-- Animated Brand Emblem -->
-      <div class="relative mb-6">
-        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-[#C5A059]/40 flex items-center justify-center p-3 relative bg-[#0A1C13]/80 shadow-[0_0_35px_rgba(197,160,89,0.2)]">
-          <div class="absolute inset-0 rounded-full border-t-2 border-r border-[#D4AF37] opacity-80 animate-spin" style="animation-duration: 4s;"></div>
-          <div class="absolute inset-2 rounded-full border-b border-l border-[#C5A059]/60 opacity-60 animate-spin" style="animation-direction: reverse; animation-duration: 6s;"></div>
-          <span class="material-symbols-outlined text-[#D4AF37] text-4xl sm:text-5xl drop-shadow-[0_2px_8px_rgba(212,175,55,0.5)]">spa</span>
+      <!-- Animated Brand Emblem Centerpiece with Subtle Celestial Orbit -->
+      <div class="relative mb-6 flex items-center justify-center">
+        <!-- Outer Breathing Gold Glow -->
+        <div class="absolute w-36 h-36 rounded-full bg-[#D4AF37]/10 blur-xl pointer-events-none"></div>
+
+        <!-- Thin Orbital Celestial Halo -->
+        <div class="absolute w-32 h-32 rounded-full border border-[#D4AF37]/30 border-dashed animate-spin pointer-events-none" style="animation-duration: 14s;"></div>
+        <div class="absolute w-28 h-28 rounded-full border-t border-b border-[#C5A059]/40 animate-spin pointer-events-none" style="animation-direction: reverse; animation-duration: 8s;"></div>
+
+        <!-- Official Luxignia Brand Logo Medallion -->
+        <div class="relative z-10 px-6 py-4 rounded-2xl bg-[#0A1C13]/70 backdrop-blur-sm border border-[#D4AF37]/30 shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center justify-center group overflow-hidden">
+          <div class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[#FFF3C4]/20 to-transparent skew-x-12" style="animation: luxShimmer 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;"></div>
+          <img src="images/luxignia-logo-gold.png" alt="Luxignia Atelier" class="h-20 sm:h-24 w-auto object-contain" style="filter: drop-shadow(0 2px 16px rgba(212, 175, 55, 0.45));" />
         </div>
       </div>
 
       <!-- Brand Wordmark & Provenance -->
       <div class="space-y-1 mb-8">
-        <h1 class="font-serif text-3xl sm:text-4xl tracking-[0.3em] uppercase text-[#FCF9F3] font-medium drop-shadow-md">Luxignia</h1>
-        <p class="text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-[#C5A059] font-semibold">Artisanal Living • Atelier Est. MCMXXIV</p>
+        <p class="text-[11px] sm:text-[12px] uppercase tracking-[0.38em] text-[#C5A059] font-medium drop-shadow-sm">Artisanal Living • Atelier Est. MCMXXIV</p>
       </div>
 
       <!-- Precision Progress Bar -->
@@ -157,12 +163,8 @@
       </nav>
 
       <!-- Brand Logo -->
-      <a href="#" data-path="home" class="brand-logo">
-        <span class="material-symbols-outlined text-gold-antique text-2xl">spa</span>
-        <div class="flex flex-col items-center">
-          <span class="title text-primary">Luxignia</span>
-          <span class="text-[9px] uppercase tracking-[0.25em] text-gold-antique font-semibold -mt-1">Artisanal Living</span>
-        </div>
+      <a href="#" data-path="home" class="brand-logo flex items-center" title="Luxignia - Artisanal Living">
+        <img src="images/luxignia-logo.png" alt="Luxignia Atelier" class="h-10 w-auto object-contain transition-transform duration-300 hover:scale-105" />
       </a>
 
       <!-- Right Action Cluster -->
@@ -259,8 +261,7 @@
       <div>
         <div class="flex items-center justify-between pb-6 border-b border-subtle mb-6">
           <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-gold-antique text-2xl">spa</span>
-            <span class="font-serif text-xl font-bold text-primary">Luxignia</span>
+            <img src="images/luxignia-logo.png" alt="Luxignia Atelier" class="h-8 w-auto object-contain" />
           </div>
           <button onclick="document.getElementById('mobile-menu-drawer').classList.remove('active')" class="p-1 text-muted">
             <span class="material-symbols-outlined">close</span>
@@ -522,9 +523,8 @@
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
             <!-- Brand Column -->
             <div class="lg:col-span-2">
-              <div class="flex items-center gap-2 mb-4">
-                <span class="material-symbols-outlined text-gold-antique text-3xl">spa</span>
-                <span class="font-serif text-2xl font-bold tracking-tight text-white">Luxignia</span>
+              <div class="flex items-center gap-3 mb-4">
+                <img src="images/luxignia-logo-gold.png" alt="Luxignia Atelier" class="h-12 w-auto object-contain" style="filter: drop-shadow(0 2px 12px rgba(212, 175, 55, 0.4));" />
               </div>
               <p class="text-xs text-gray-300 max-w-sm mb-6 leading-relaxed">
                 Artisanal luxury statement décor, astronomical horology, and sacred Vastu masterpieces crafted for heirloom residences and private estates worldwide.
@@ -1406,8 +1406,8 @@
   <div id="modal-auth" class="modal-overlay" onclick="if(event.target === this) window.app.closeModal('modal-auth');">
     <div class="modal-content max-w-md p-8">
       <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-gold-antique text-2xl">spa</span>
+        <div class="flex items-center gap-3">
+          <img src="images/luxignia-logo.png" alt="Luxignia" class="h-8 w-auto object-contain" />
           <h3 class="font-serif font-bold text-xl text-primary" id="modal-auth-title">Patron Sign In</h3>
         </div>
         <button onclick="window.app.closeModal('modal-auth')" class="text-muted hover:text-primary">

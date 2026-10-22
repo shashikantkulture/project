@@ -112,43 +112,44 @@ export default function LoadingScreen({ onComplete }) {
 
       {/* Main Centerpiece */}
       <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-md w-full">
-        {/* Animated Brand Emblem / Crest */}
-        <div className="relative mb-6">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-[#C5A059]/40 flex items-center justify-center p-3 relative bg-[#0A1C13]/80 shadow-[0_0_35px_rgba(197,160,89,0.18)]">
-            {/* Spinning Golden Orbit Ring */}
+        {/* Animated Brand Emblem Centerpiece with Subtle Celestial Orbit */}
+        <div className="relative mb-6 flex items-center justify-center">
+          {/* Outer Breathing Gold Glow */}
+          <div className="absolute w-36 h-36 rounded-full bg-[#D4AF37]/10 blur-xl animate-pulse pointer-events-none" />
+
+          {/* Thin Orbital Celestial Halo */}
+          <div
+            className="absolute w-32 h-32 rounded-full border border-[#D4AF37]/30 border-dashed animate-spin pointer-events-none"
+            style={{ animationDuration: '14s' }}
+          />
+          <div
+            className="absolute w-28 h-28 rounded-full border-t border-b border-[#C5A059]/40 animate-spin pointer-events-none"
+            style={{ animationDirection: 'reverse', animationDuration: '8s' }}
+          />
+
+          {/* Official Luxignia Brand Logo Medallion */}
+          <div className="relative z-10 px-6 py-4 rounded-2xl bg-[#0A1C13]/70 backdrop-blur-sm border border-[#D4AF37]/30 shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center justify-center group overflow-hidden">
+            {/* Shimmer light bar across the logo */}
             <div
-              className="absolute inset-0 rounded-full border-t-2 border-r border-[#D4AF37] opacity-80 animate-spin"
-              style={{ animationDuration: '4s' }}
+              className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[#FFF3C4]/20 to-transparent skew-x-12 animate-[shimmer_2.5s_infinite]"
+              style={{
+                animation: 'luxShimmer 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite'
+              }}
             />
-            {/* Counter-Spinning Inner Ring */}
-            <div
-              className="absolute inset-2 rounded-full border-b border-l border-[#C5A059]/60 opacity-60 animate-spin"
-              style={{ animationDirection: 'reverse', animationDuration: '6s' }}
+            <img
+              src="/images/luxignia-logo-gold.png"
+              alt="Luxignia Atelier"
+              className="h-20 sm:h-24 w-auto object-contain transition-transform duration-500 hover:scale-105"
+              style={{
+                filter: 'drop-shadow(0 2px 16px rgba(212, 175, 55, 0.45))'
+              }}
             />
-            {/* Botanical Lotus / Spa Crest Icon */}
-            <svg
-              className="w-10 h-10 sm:w-12 sm:h-12 text-[#D4AF37] drop-shadow-[0_2px_8px_rgba(212,175,55,0.5)]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M12 2C8.5 7 6 11 6 15a6 6 0 0 0 12 0c0-4-2.5-8-6-13z" />
-              <path d="M12 2c-2 5-6 8-6 12 0 1.5.5 3 1.5 4" opacity="0.6" />
-              <path d="M12 2c2 5 6 8 6 12 0 1.5-.5 3-1.5 4" opacity="0.6" />
-              <circle cx="12" cy="15" r="1.5" fill="#D4AF37" stroke="none" />
-            </svg>
           </div>
         </div>
 
-        {/* Brand Wordmark & Provenance */}
-        <div className="space-y-1.5 mb-8">
-          <h1 className="font-serif text-3xl sm:text-4xl tracking-[0.3em] uppercase text-[#FCF9F3] font-medium drop-shadow-md">
-            Luxignia
-          </h1>
-          <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-[#C5A059] font-semibold">
+        {/* Brand Provenance Subtitle */}
+        <div className="space-y-1 mb-8">
+          <p className="text-[11px] sm:text-[12px] uppercase tracking-[0.38em] text-[#C5A059] font-medium drop-shadow-sm">
             Artisanal Living • Atelier Est. MCMXXIV
           </p>
         </div>

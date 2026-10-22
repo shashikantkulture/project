@@ -69,21 +69,20 @@ export default function CRMSidebar({ activeTab, onSelectTab, isCollapsed, onTogg
             onClick={() => onSelectTab('dashboard')}
             className="flex items-center gap-3 cursor-pointer group"
           >
-            {/* Luxignia Modern Emblem in Crisp Electric Blue */}
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-700 via-blue-600 to-sky-500 text-white shadow-md shadow-blue-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="9" />
-                <path d="M12 3a9 9 0 0 1 9 9" />
-                <path d="M12 7a5 5 0 0 1 5 5" />
-                <path d="M12 11a1 1 0 0 1 1 1" />
-              </svg>
+            {/* Luxignia Official Brand Emblem */}
+            <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-700/60 dark:border-slate-800 flex items-center justify-center p-1.5 shadow-md shadow-amber-500/10 shrink-0 group-hover:scale-105 transition-transform overflow-hidden">
+              <img
+                src="/images/luxignia-logo-gold.png"
+                alt="Luxignia"
+                className="w-full h-full object-contain"
+              />
             </div>
 
             {!isCollapsed && (
               <div className="overflow-hidden whitespace-nowrap">
                 <div className="font-serif font-bold text-sm tracking-widest text-slate-900 dark:text-white uppercase flex items-center gap-1.5">
                   LUXIGNIA
-                  <span className="text-[9px] px-1.5 py-0.2 rounded font-sans font-bold bg-blue-100 dark:bg-blue-950/70 text-blue-800 dark:text-blue-300 uppercase tracking-wider">
+                  <span className="text-[9px] px-1.5 py-0.5 rounded font-sans font-bold bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 uppercase tracking-wider">
                     PRO
                   </span>
                 </div>

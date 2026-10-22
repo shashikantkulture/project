@@ -384,3 +384,12 @@ input[type="range"] {
   }
 }
 
+@keyframes luxShimmer {
+  0% {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  50%, 100% {
+    transform: translateX(220%) skewX(-20deg);
+  }
+}
+

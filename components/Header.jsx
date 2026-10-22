@@ -41,12 +41,12 @@ export default function Header() {
       {/* Main Header Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* 1. Left: Brand Logo */}
-        <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-          <span className="material-symbols-outlined text-[#C5A059] text-3xl group-hover:scale-110 transition-transform">spa</span>
-          <div className="flex flex-col">
-            <span className="font-serif text-2xl font-bold tracking-tight text-[#173626] leading-none">Luxignia</span>
-            <span className="text-[9px] uppercase tracking-[0.28em] text-[#C5A059] font-bold mt-1">Artisanal Living</span>
-          </div>
+        <Link href="/" className="flex items-center gap-3 group flex-shrink-0" title="Luxignia - Artisanal Living">
+          <img
+            src="/images/luxignia-logo.png"
+            alt="Luxignia Atelier"
+            className="h-10 sm:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+          />
         </Link>
 
         {/* 2. Center: Navigation Links (Desktop) */}

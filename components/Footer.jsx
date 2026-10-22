@@ -8,9 +8,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-[#FCF9F3]/15">
           {/* Column 1: Brand & Atelier */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#D4AF37] text-3xl">spa</span>
-              <span className="font-serif text-3xl font-bold tracking-tight text-[#FCF9F3]">Luxignia</span>
+            <div className="flex items-center gap-3">
+              <img
+                src="/images/luxignia-logo-gold.png"
+                alt="Luxignia Atelier"
+                className="h-12 w-auto object-contain"
+                style={{
+                  filter: 'drop-shadow(0 2px 12px rgba(212, 175, 55, 0.4))'
+                }}
+              />
             </div>
             <p className="text-xs text-[#E5E2DC] leading-relaxed max-w-sm">
               Artisanal luxury statement décor, astronomical horology, and sacred Vastu masterpieces crafted for heirloom residences and private estates worldwide.
