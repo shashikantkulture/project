@@ -64,8 +64,6 @@ html {
   background-color: var(--bg-linen);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  /* Hide default cursor for custom cursor */
-  cursor: none;
 }
 
 body {
@@ -76,78 +74,159 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a, button, input, select, textarea {
-  cursor: none !important;
+/* Custom Cursor Rules: Desktop Fine Pointer Only */
+@media (hover: hover) and (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor body,
+  html.has-custom-cursor a,
+  html.has-custom-cursor button,
+  html.has-custom-cursor [role="button"],
+  html.has-custom-cursor .luxury-card,
+  html.has-custom-cursor .cursor-pointer {
+    cursor: none !important;
+  }
+
+  html.has-custom-cursor input,
+  html.has-custom-cursor textarea,
+  html.has-custom-cursor select,
+  html.has-custom-cursor [contenteditable="true"] {
+    cursor: text !important;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    display: none !important;
+  }
+  * {
+    cursor: auto !important;
+  }
 }
 
 /* Custom Cursor Elements */
-.custom-cursor-dot {
+.custom-cursor-pointer {
   position: fixed;
   top: 0;
   left: 0;
-  width: 8px;
-  height: 8px;
-  background-color: var(--gold-bright);
-  border-radius: 50%;
   pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s, background-color 0.2s;
+  z-index: 100000;
+  opacity: 0;
+  will-change: transform;
+  transition: opacity 0.15s ease-out;
+}
+
+.custom-cursor-pointer.cursor-active {
+  transform: scale(0.88) !important;
 }
 
 .custom-cursor-ring {
   position: fixed;
   top: 0;
   left: 0;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--gold-antique);
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(197, 160, 89, 0.55);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease-out, width 0.25s, height 0.25s, border-color 0.25s, background-color 0.25s;
+  z-index: 99999;
+  margin-left: -18px;
+  margin-top: -18px;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s, border-color 0.3s, background-color 0.3s, margin 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0;
+  will-change: transform;
 }
 
 .custom-cursor-label {
   font-family: var(--font-sans);
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--forest-deep);
+  color: #FCF9F3;
   opacity: 0;
-  transition: opacity 0.2s;
+  transform: scale(0.8);
+  transition: opacity 0.2s ease, transform 0.2s ease;
   white-space: nowrap;
+  pointer-events: none;
 }
 
-/* Hover States for Custom Cursor */
-body.cursor-hover .custom-cursor-dot {
-  width: 4px;
-  height: 4px;
-  background-color: var(--primary);
-}
-
+/* Cursor Interaction States */
 body.cursor-hover .custom-cursor-ring {
   width: 56px;
   height: 56px;
-  border-color: var(--primary);
-  background-color: rgba(197, 160, 89, 0.12);
+  margin-left: -28px;
+  margin-top: -28px;
+  border-color: var(--gold-antique);
+  background-color: rgba(197, 160, 89, 0.14);
+  box-shadow: 0 0 20px rgba(197, 160, 89, 0.25);
+}
+
+body.cursor-hover .custom-cursor-dot {
+  width: 3px;
+  height: 3px;
+  margin-left: -1.5px;
+  margin-top: -1.5px;
+  background-color: var(--primary);
+}
+
+body.cursor-link .custom-cursor-ring {
+  width: 48px;
+  height: 48px;
+  margin-left: -24px;
+  margin-top: -24px;
+  border-color: var(--gold-bright);
+  background-color: rgba(212, 175, 55, 0.08);
+}
+
+body.cursor-view .custom-cursor-ring {
+  width: 48px;
+  height: 48px;
+  margin-left: -24px;
+  margin-top: -24px;
+  border-color: var(--gold-bright);
+  background-color: transparent !important;
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.3);
+}
+
+body.cursor-view .custom-cursor-label {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+body.cursor-view .custom-cursor-pointer {
+  opacity: 1 !important;
 }
 
 body.cursor-3d .custom-cursor-ring {
-  width: 68px;
-  height: 68px;
+  width: 50px;
+  height: 50px;
+  margin-left: -25px;
+  margin-top: -25px;
   border-color: var(--gold-bright);
-  background-color: rgba(23, 54, 38, 0.85);
+  background-color: transparent !important;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
 }
 
 body.cursor-3d .custom-cursor-label {
-  opacity: 1;
-  color: #FCF9F3;
+  display: none !important;
+  opacity: 0 !important;
+}
+
+body.cursor-3d .custom-cursor-pointer {
+  opacity: 1 !important;
+}
+
+body.cursor-hidden .custom-cursor-pointer,
+body.cursor-hidden .custom-cursor-ring {
+  opacity: 0 !important;
+}
+
+.custom-cursor-ring.cursor-active {
+  transform: scale(0.86) !important;
 }
 
 /* Material Symbols */
@@ -732,4 +811,97 @@ body.cursor-3d .custom-cursor-label {
 #mobile-menu-drawer.active .mobile-menu-panel {
   transform: translateX(0);
 }
+
+/* ==========================================================================
+   Luxignia Luxury Upgrade: Loader, 3D Tilt & Micro-Interactions
+   ========================================================================== */
+
+/* 1. Custom Premium Full-Screen Loading Experience */
+#luxignia-premium-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: radial-gradient(ellipse at 50% 40%, #0F2A1E 0%, #0A1C13 65%, #050E09 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.75s cubic-bezier(0.85, 0, 0.15, 1), transform 0.75s cubic-bezier(0.85, 0, 0.15, 1);
+  pointer-events: auto;
+}
+
+#luxignia-premium-loader.is-finishing {
+  opacity: 0;
+  transform: scale(1.03);
+  pointer-events: none;
+}
+
+/* 2. Hero 3D Stage & Roman Arch Tilt Container */
+.hero-3d-stage {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.hero-tilt-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+/* Floating Elements */
+@keyframes luxuryFloatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.4deg);
+  }
+}
+
+.animate-float-slow {
+  animation: luxuryFloatSlow 5.5s ease-in-out infinite;
+}
+
+/* Golden Sheen CTA */
+.btn-gold-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-gold-sheen::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -150%;
+  width: 60%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    rgba(212, 175, 55, 0.5),
+    transparent
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+}
+
+.btn-gold-sheen:hover::after {
+  left: 200%;
+  transition: left 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #luxignia-premium-loader {
+    transition: opacity 0.15s ease !important;
+  }
+  .animate-float-slow,
+  .hero-tilt-card {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
 

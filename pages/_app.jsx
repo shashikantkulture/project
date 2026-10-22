@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { AppProvider } from '../lib/AppContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -9,9 +10,44 @@ import AuthModal from '../components/AuthModal';
 import ShowroomModal from '../components/ShowroomModal';
 import CheckoutModal from '../components/CheckoutModal';
 import ThreeStudioModal from '../components/ThreeStudioModal';
+import LoadingScreen from '../components/LoadingScreen';
+import CustomCursor from '../components/CustomCursor';
 import '../styles/globals.css';
 
 export default function App({ Component, pageProps }) {
+  const router = useRouter();
+
+  // If page provides custom layout, use it
+  if (Component.getLayout) {
+    return (
+      <AppProvider>
+        <Head>
+          <title>Luxignia CRM & E-Commerce Operating System</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        {Component.getLayout(<Component {...pageProps} />)}
+      </AppProvider>
+    );
+  }
+
+  // If this is the flagship CRM suite route (/crm or subroutes)
+  const isCrmRoute = router.pathname.startsWith('/crm');
+  if (isCrmRoute) {
+    return (
+      <AppProvider>
+        <Head>
+          <title>Luxignia CRM & E-Commerce Operating System</title>
+          <meta name="description" content="Next-generation $50k+ luxury SaaS & e-commerce intelligence management platform for Luxignia." />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Component {...pageProps} />
+      </AppProvider>
+    );
+  }
+
+  // Storefront standard layout
   return (
     <AppProvider>
       <Head>
@@ -25,21 +61,14 @@ export default function App({ Component, pageProps }) {
       </Head>
 
       <div className="relative min-h-screen flex flex-col bg-[#FCF9F3] text-[#10261C]">
-        {/* Full-screen Gold Particles Effect */}
+        <LoadingScreen />
+        <CustomCursor />
         <ParticlesBackground />
-
-        {/* Global Structured Header */}
         <Header />
-
-        {/* Main Content View */}
         <main className="flex-1 relative z-10 pt-28">
           <Component {...pageProps} />
         </main>
-
-        {/* Global Visible High-Contrast Footer */}
         <Footer />
-
-        {/* Global Overlays & Modals */}
         <CartDrawer />
         <AuthModal />
         <ShowroomModal />

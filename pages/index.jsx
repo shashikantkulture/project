@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useApp } from '../lib/AppContext';
+import HeroProduct3DSlider from '../components/HeroProduct3DSlider';
 
 export default function HomePage() {
   const { addToCart, isWishlisted, toggleWishlist, setStudioProduct, setIsShowroomOpen } = useApp();
@@ -19,6 +20,30 @@ export default function HomePage() {
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, []);
+
+  const heroRef = React.useRef(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0, glareX: 50, glareY: 50, isHovered: false });
+
+  const handleHeroMouseMove = (e) => {
+    if (!heroRef.current) return;
+    const rect = heroRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    const normX = (x - 0.5) * 2;
+    const normY = (y - 0.5) * 2;
+
+    setTilt({
+      x: normY * -6,
+      y: normX * 8,
+      glareX: Math.round(x * 100),
+      glareY: Math.round(y * 100),
+      isHovered: true,
+    });
+  };
+
+  const handleHeroMouseLeave = () => {
+    setTilt({ x: 0, y: 0, glareX: 50, glareY: 50, isHovered: false });
+  };
 
   const heroItem = featuredProducts[0] || {
     id: 'prod-1',
@@ -62,127 +87,9 @@ export default function HomePage() {
       </Head>
 
       <div className="space-y-24">
-        {/* HERO SECTION */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left Column: Editorial Headline & Copy */}
-            <div className="lg:col-span-6 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#173626]/8 border border-[#173626]/15">
-                <span className="w-2 h-2 rounded-full bg-[#C5A059] animate-pulse"></span>
-                <span className="text-[11px] font-bold uppercase tracking-widest text-[#173626]">
-                  {heroItem.badge || 'The Corner-Office Favourite'}
-                </span>
-              </div>
-
-              <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-[#0A1C13] leading-[1.12]">
-                Objects that <span className="italic font-normal underline decoration-[#C5A059]/60 underline-offset-8">hold</span> the room.
-              </h1>
-
-              <p className="text-base sm:text-lg text-[#35433B] leading-relaxed max-w-xl font-normal">
-                Sculptural décor, astronomical clocks and gilded Vastu pieces — chosen one by one for discerning homes, executive penthouses, and private estates.
-              </p>
-
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <Link href="/shop" className="btn-primary py-3.5 px-8 text-xs font-bold tracking-wider">
-                  <span>Explore Collection</span>
-                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                </Link>
-
-                <button
-                  onClick={() => setIsShowroomOpen(true)}
-                  className="btn-outline py-3 px-6 text-xs font-bold tracking-wider"
-                >
-                  <span>Book Showroom Visit</span>
-                </button>
-              </div>
-
-              {/* Curated Trust Stats */}
-              <div className="grid grid-cols-3 gap-6 pt-6 border-t border-[#173626]/12">
-                <div>
-                  <div className="font-serif text-2xl font-bold text-[#173626]">100%</div>
-                  <div className="text-[11px] font-semibold text-[#5D6B62] uppercase tracking-wider mt-0.5">
-                    Directional Vastu
-                  </div>
-                </div>
-                <div>
-                  <div className="font-serif text-2xl font-bold text-[#173626]">24K</div>
-                  <div className="text-[11px] font-semibold text-[#5D6B62] uppercase tracking-wider mt-0.5">
-                    Gold Leaf Plating
-                  </div>
-                </div>
-                <div>
-                  <div className="font-serif text-2xl font-bold text-[#173626]">Armored</div>
-                  <div className="text-[11px] font-semibold text-[#5D6B62] uppercase tracking-wider mt-0.5">
-                    White-Glove Delivery
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: Hero High-Res Feature Frame with 3D Launcher */}
-            <div className="lg:col-span-6 relative">
-              <div className="relative mx-auto max-w-md lg:max-w-none rounded-t-[160px] rounded-b-3xl bg-[#F4EFE6] border-2 border-[#C5A059]/30 p-6 pb-8 shadow-2xl overflow-hidden group">
-                {/* Background Ambient Glow */}
-                <div className="absolute inset-0 bg-gradient-to-b from-[#C5A059]/10 via-transparent to-[#173626]/10 pointer-events-none" />
-
-                {/* Top Badge */}
-                <div className="flex justify-between items-center mb-4 relative z-10">
-                  <span className="badge-gold">
-                    <span className="material-symbols-outlined text-xs">verified</span>
-                    <span>Artisanal Masterwork</span>
-                  </span>
-                  <span className="vastu-pill font-bold">
-                    {heroItem.vastu || 'North-East Zone'}
-                  </span>
-                </div>
-
-                {/* High-Resolution Main Photography */}
-                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-white/60 border border-[#173626]/10 mb-5">
-                  <img
-                    src={heroItem.image}
-                    alt={heroItem.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-
-                  {/* 3D Studio Secondary Launcher Button Floating on Image */}
-                  <div className="absolute bottom-4 inset-x-4 flex justify-center">
-                    <button
-                      onClick={() => setStudioProduct(heroItem)}
-                      className="btn-gold py-2.5 px-5 text-xs font-bold rounded-full shadow-lg flex items-center gap-2 transform hover:scale-105 transition-all"
-                    >
-                      <span className="material-symbols-outlined text-base">view_in_ar</span>
-                      <span>Launch 3D Interactive Studio (360°)</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Hero Item Details & Action */}
-                <div className="relative z-10 text-center space-y-2">
-                  <h3 className="font-serif text-2xl font-bold text-[#0A1C13]">
-                    {heroItem.title}
-                  </h3>
-                  <div className="font-serif text-xl font-bold text-[#8C6A1E]">
-                    ${heroItem.price.toLocaleString()}
-                  </div>
-
-                  <div className="flex items-center justify-center gap-3 pt-3">
-                    <Link
-                      href={`/products/${heroItem.id}`}
-                      className="btn-primary py-2.5 px-5 text-xs font-bold"
-                    >
-                      View Masterpiece Details
-                    </Link>
-                    <button
-                      onClick={() => addToCart(heroItem, 1)}
-                      className="btn-outline py-2.5 px-4 text-xs font-bold"
-                    >
-                      Acquire Now
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* FULL-SECTION IMMERSIVE 3D MOVEMENT PRODUCT STAGE */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-6">
+          <HeroProduct3DSlider products={featuredProducts} />
         </section>
 
         {/* CURATED STATEMENT CATEGORIES */}
@@ -209,6 +116,8 @@ export default function HomePage() {
             {categories.map((cat, idx) => (
               <div
                 key={idx}
+                data-cursor="explore"
+                data-cursor-text="EXPLORE"
                 className="luxury-card p-6 flex flex-col justify-between group hover:border-[#C5A059]"
               >
                 <div>
@@ -263,6 +172,8 @@ export default function HomePage() {
               {featuredProducts.slice(0, 6).map((prod) => (
                 <div
                   key={prod.id}
+                  data-cursor="view"
+                  data-cursor-text="VIEW"
                   className="luxury-card flex flex-col justify-between group p-5 bg-white"
                 >
                   {/* Image View in First View */}
@@ -284,6 +195,7 @@ export default function HomePage() {
                       onClick={() => toggleWishlist(prod.id)}
                       className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 text-[#173626] flex items-center justify-center hover:bg-[#173626] hover:text-white transition-colors shadow-sm"
                       title="Curator Wishlist"
+                      data-cursor="button"
                     >
                       <span className="material-symbols-outlined text-lg">
                         {isWishlisted(prod.id) ? 'favorite' : 'favorite_border'}
@@ -294,6 +206,8 @@ export default function HomePage() {
                     <div className="absolute bottom-3 inset-x-3">
                       <button
                         onClick={() => setStudioProduct(prod)}
+                        data-cursor="3d"
+                        data-cursor-text="ROTATE 360°"
                         className="w-full py-2 px-3 rounded-lg bg-[#0A1C13]/85 backdrop-blur-sm text-[#FCF9F3] hover:bg-[#0A1C13] hover:text-[#D4AF37] text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-md"
                       >
                         <span className="material-symbols-outlined text-sm text-[#D4AF37]">view_in_ar</span>

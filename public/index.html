@@ -17,6 +17,105 @@
 </head>
 <body class="bg-background text-on-surface font-sans antialiased selection:bg-amber-200 selection:text-green-950">
 
+  <!-- ================= CUSTOM PREMIUM LUXURY LOADING SCREEN ================= -->
+  <div id="luxignia-premium-loader" aria-live="polite" aria-label="Loading Luxignia Atelier">
+    <!-- Subtle Golden Grid Lines & Ambient Glow -->
+    <div class="absolute inset-0 pointer-events-none opacity-20" style="background-image: radial-gradient(circle at 50% 50%, rgba(197, 160, 89, 0.25) 0%, transparent 60%), linear-gradient(to right, rgba(197, 160, 89, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(197, 160, 89, 0.05) 1px, transparent 1px); background-size: 100% 100%, 48px 48px, 48px 48px;"></div>
+    <div class="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#C5A059]/40 to-transparent"></div>
+    <div class="absolute bottom-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-[#C5A059]/40 to-transparent"></div>
+
+    <div class="relative z-10 flex flex-col items-center text-center px-6 max-w-md w-full">
+      <!-- Animated Brand Emblem -->
+      <div class="relative mb-6">
+        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-[#C5A059]/40 flex items-center justify-center p-3 relative bg-[#0A1C13]/80 shadow-[0_0_35px_rgba(197,160,89,0.2)]">
+          <div class="absolute inset-0 rounded-full border-t-2 border-r border-[#D4AF37] opacity-80 animate-spin" style="animation-duration: 4s;"></div>
+          <div class="absolute inset-2 rounded-full border-b border-l border-[#C5A059]/60 opacity-60 animate-spin" style="animation-direction: reverse; animation-duration: 6s;"></div>
+          <span class="material-symbols-outlined text-[#D4AF37] text-4xl sm:text-5xl drop-shadow-[0_2px_8px_rgba(212,175,55,0.5)]">spa</span>
+        </div>
+      </div>
+
+      <!-- Brand Wordmark & Provenance -->
+      <div class="space-y-1 mb-8">
+        <h1 class="font-serif text-3xl sm:text-4xl tracking-[0.3em] uppercase text-[#FCF9F3] font-medium drop-shadow-md">Luxignia</h1>
+        <p class="text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-[#C5A059] font-semibold">Artisanal Living • Atelier Est. MCMXXIV</p>
+      </div>
+
+      <!-- Precision Progress Bar -->
+      <div class="w-full bg-[#173626]/80 rounded-full h-[2px] mb-4 relative overflow-hidden border border-[#C5A059]/20">
+        <div id="lux-loader-progress-bar" class="h-full bg-gradient-to-r from-[#C5A059] via-[#D4AF37] to-[#FFF3C4] transition-all duration-150 ease-out shadow-[0_0_10px_#D4AF37]" style="width: 0%;"></div>
+      </div>
+
+      <!-- Counter & Status -->
+      <div class="flex items-center justify-between w-full text-xs">
+        <span id="lux-loader-status" class="font-serif tracking-widest text-[#C5A059] text-[13px] font-medium transition-all duration-300">Harmonizing Sacred Geometry...</span>
+        <span id="lux-loader-counter" class="font-mono text-[#FCF9F3]/90 text-[13px] font-bold tracking-wider tabular-nums">00%</span>
+      </div>
+    </div>
+
+    <div class="absolute bottom-6 text-[9px] uppercase tracking-[0.4em] text-[#C5A059]/50">
+      Mayfair • Paris • Mumbai • Dubai
+    </div>
+  </div>
+  <script>
+    (function() {
+      var loader = document.getElementById('luxignia-premium-loader');
+      var bar = document.getElementById('lux-loader-progress-bar');
+      var counter = document.getElementById('lux-loader-counter');
+      var status = document.getElementById('lux-loader-status');
+      if (!loader) return;
+
+      var phrases = [
+        'Harmonizing Sacred Geometry...',
+        'Summoning Haute Horology & Bronze...',
+        'Aligning Directional Vastu Plinths...',
+        'Welcome to Luxignia Atelier'
+      ];
+
+      var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) {
+        loader.classList.add('is-finishing');
+        setTimeout(function() { loader.remove(); }, 150);
+        return;
+      }
+
+      var startTime = performance.now();
+      var duration = 1400;
+
+      function step(now) {
+        var elapsed = now - startTime;
+        var p = Math.min(elapsed / duration, 1);
+        var eased = Math.round(100 * (1 - Math.pow(1 - p, 3)));
+
+        if (bar) bar.style.width = eased + '%';
+        if (counter) counter.textContent = (eased < 10 ? '0' : '') + eased + '%';
+
+        if (status) {
+          if (eased < 35) status.textContent = phrases[0];
+          else if (eased < 70) status.textContent = phrases[1];
+          else if (eased < 95) status.textContent = phrases[2];
+          else status.textContent = phrases[3];
+        }
+
+        if (p < 1) {
+          requestAnimationFrame(step);
+        } else {
+          loader.classList.add('is-finishing');
+          setTimeout(function() { loader.remove(); }, 800);
+        }
+      }
+
+      requestAnimationFrame(step);
+
+      // Fail-safe timeout
+      setTimeout(function() {
+        if (loader && loader.parentNode) {
+          loader.classList.add('is-finishing');
+          setTimeout(function() { loader.remove(); }, 500);
+        }
+      }, 2000);
+    })();
+  </script>
+
   <!-- ================= TOP NAVIGATION BAR ================= -->
   <header class="navbar-wrapper">
     <!-- Announcement Bar -->
@@ -126,15 +225,15 @@
                 <span>Concierge Inquiries</span>
               </a>
               <div id="dropdown-staff-links" class="border-t border-subtle my-1 pt-1" style="display:none;">
-                <a href="#" data-path="crm" class="flex items-center gap-2 px-4 py-2 text-xs text-gold-bright font-bold hover:bg-surface-linen">
+                <a href="/crm" class="flex items-center gap-2 px-4 py-2 text-xs text-gold-bright font-bold hover:bg-surface-linen">
                   <span class="material-symbols-outlined text-[16px]">leaderboard</span>
-                  <span>Executive CRM</span>
+                  <span>Executive CRM Suite</span>
                 </a>
               </div>
               <div id="dropdown-admin-links" class="border-t border-subtle my-1 pt-1" style="display:none;">
-                <a href="#" data-path="admin" class="flex items-center gap-2 px-4 py-2 text-xs text-purple-700 font-bold hover:bg-surface-linen">
+                <a href="/crm?tab=team" class="flex items-center gap-2 px-4 py-2 text-xs text-purple-700 font-bold hover:bg-surface-linen">
                   <span class="material-symbols-outlined text-[16px]">admin_panel_settings</span>
-                  <span>System Admin Panel</span>
+                  <span>System Admin (CRM)</span>
                 </a>
               </div>
               <div class="border-t border-subtle my-1"></div>
@@ -177,8 +276,8 @@
           <a href="#" data-path="salon" class="nav-link mobile-link">VIP Patron Vault</a>
           <a href="#" data-path="contact" class="nav-link mobile-link">Contact</a>
           <a href="#" id="mobile-link-dashboard" data-path="dashboard" class="nav-link mobile-link text-forest-brand font-bold" style="display:none;">My Patron Portal</a>
-          <a href="#" id="mobile-link-crm" data-path="crm" class="nav-link mobile-link text-gold-bright font-bold" style="display:none;">Executive CRM</a>
-          <a href="#" id="mobile-link-admin" data-path="admin" class="nav-link mobile-link text-purple-700 font-bold" style="display:none;">Admin Panel</a>
+          <a href="/crm" id="mobile-link-crm" class="nav-link mobile-link text-gold-bright font-bold" style="display:none;">Executive CRM Suite</a>
+          <a href="/crm?tab=team" id="mobile-link-admin" class="nav-link mobile-link text-purple-700 font-bold" style="display:none;">Admin Platform (CRM)</a>
         </nav>
       </div>
 
@@ -226,12 +325,12 @@
 
             <!-- CTA Cluster -->
             <div class="flex flex-wrap items-center gap-4 mb-10">
-              <button onclick="window.app.switchView('shop')" class="btn-primary">
+              <button onclick="window.app.switchView('shop')" class="btn-primary btn-gold-sheen" data-cursor="button">
                 <span>Explore Collection</span>
                 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
               </button>
 
-              <button onclick="window.app.openShowroomModal()" class="btn-outline">
+              <button onclick="window.app.openShowroomModal()" class="btn-outline" data-cursor="button">
                 <span>Book Showroom Visit</span>
               </button>
             </div>
@@ -256,22 +355,58 @@
           </div>
 
           <!-- Right Column: Interactive 3D Canvas Arch -->
-          <div class="lg:col-span-6 flex justify-center">
-            <div class="roman-arch-container w-full max-w-[500px] aspect-[4/5] p-6 flex flex-col justify-between">
+          <div class="lg:col-span-6 flex justify-center hero-3d-stage">
+            <div id="hero-tilt-frame" class="hero-tilt-card roman-arch-container w-full max-w-[500px] aspect-[4/5] p-6 flex flex-col justify-between relative overflow-hidden">
+              <!-- Dynamic Specular Glare -->
+              <div id="hero-tilt-glare" class="absolute inset-0 pointer-events-none transition-opacity duration-300 z-20 opacity-0" style="background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.45) 0%, rgba(197, 160, 89, 0.15) 35%, transparent 70%);"></div>
+
               <!-- Top Badge Tag -->
-              <div class="self-end bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full flex items-center gap-2 shadow-sm border border-gold">
+              <div class="self-end bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full flex items-center gap-2 shadow-sm border border-gold relative z-10 animate-float-slow">
                 <span class="w-2 h-2 rounded-full bg-gold-bright animate-pulse"></span>
                 <span class="label-sm text-primary">Interactive 3D Studio Canvas</span>
               </div>
 
               <!-- Embedded Three.js Viewport -->
-              <div id="hero-threejs-container" class="three-viewport h-[420px]" data-cursor="3d"></div>
+              <div id="hero-threejs-container" class="three-viewport h-[420px] relative z-10" data-cursor="3d" data-cursor-text="ROTATE 360°"></div>
 
               <!-- Bottom Hint -->
-              <div class="text-center text-xs uppercase tracking-wider text-muted font-semibold pt-2">
+              <div class="text-center text-xs uppercase tracking-wider text-muted font-semibold pt-2 relative z-10">
                 <span>Drag to Rotate Sculpture • 360° Studio View</span>
               </div>
             </div>
+            <script>
+              (function() {
+                var frame = document.getElementById('hero-tilt-frame');
+                var glare = document.getElementById('hero-tilt-glare');
+                if (!frame) return;
+
+                var isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                var isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+                if (isReduced || isTouch) return;
+
+                window.addEventListener('mousemove', function(e) {
+                  var rect = frame.getBoundingClientRect();
+                  var inX = e.clientX >= rect.left - 40 && e.clientX <= rect.right + 40;
+                  var inY = e.clientY >= rect.top - 40 && e.clientY <= rect.bottom + 40;
+
+                  if (inX && inY) {
+                    var x = (e.clientX - rect.left) / rect.width;
+                    var y = (e.clientY - rect.top) / rect.height;
+                    var tiltX = (y - 0.5) * -12;
+                    var tiltY = (x - 0.5) * 14;
+
+                    frame.style.transform = 'rotateX(' + tiltX + 'deg) rotateY(' + tiltY + 'deg) scale3d(1.02, 1.02, 1.02)';
+                    if (glare) {
+                      glare.style.opacity = '0.5';
+                      glare.style.background = 'radial-gradient(circle at ' + Math.round(x * 100) + '% ' + Math.round(y * 100) + '%, rgba(255, 255, 255, 0.45) 0%, rgba(197, 160, 89, 0.15) 35%, transparent 70%)';
+                    }
+                  } else {
+                    frame.style.transform = 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                    if (glare) glare.style.opacity = '0';
+                  }
+                }, { passive: true });
+              })();
+            </script>
           </div>
 
         </div>
@@ -291,7 +426,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <!-- Card 1 -->
-          <div onclick="window.app.filterByCategory('Sculptures')" class="luxury-card p-8 flex flex-col justify-between min-h-[320px] bg-gradient-to-br from-surface-linen to-white cursor-pointer group">
+          <div onclick="window.app.filterByCategory('Sculptures')" data-cursor="explore" data-cursor-text="EXPLORE" class="luxury-card p-8 flex flex-col justify-between min-h-[320px] bg-gradient-to-br from-surface-linen to-white cursor-pointer group">
             <div>
               <span class="badge-gold mb-4">Sculptural Heritage</span>
               <h3 class="headline-md text-primary group-hover:text-gold-antique transition-colors">Monumental Sculptures</h3>
@@ -304,7 +439,7 @@
           </div>
 
           <!-- Card 2 -->
-          <div onclick="window.app.filterByCategory('Clocks')" class="luxury-card p-8 flex flex-col justify-between min-h-[320px] bg-gradient-to-br from-surface-linen to-white cursor-pointer group">
+          <div onclick="window.app.filterByCategory('Clocks')" data-cursor="explore" data-cursor-text="EXPLORE" class="luxury-card p-8 flex flex-col justify-between min-h-[320px] bg-gradient-to-br from-surface-linen to-white cursor-pointer group">
             <div>
               <span class="badge-gold mb-4">Horological Art</span>
               <h3 class="headline-md text-primary group-hover:text-gold-antique transition-colors">Astronomical Clocks</h3>
@@ -317,7 +452,7 @@
           </div>
 
           <!-- Card 3 -->
-          <div onclick="window.app.filterByCategory('Vastu Masterpieces')" class="luxury-card p-8 flex flex-col justify-between min-h-[320px] bg-gradient-to-br from-surface-linen to-white cursor-pointer group">
+          <div onclick="window.app.filterByCategory('Vastu Masterpieces')" data-cursor="explore" data-cursor-text="EXPLORE" class="luxury-card p-8 flex flex-col justify-between min-h-[320px] bg-gradient-to-br from-surface-linen to-white cursor-pointer group">
             <div>
               <span class="badge-gold mb-4">Spatial Alignment</span>
               <h3 class="headline-md text-primary group-hover:text-gold-antique transition-colors">Vastu Energy Masterpieces</h3>
@@ -966,95 +1101,49 @@
       </div>
     </section>
 
-    <!-- ---------------- PAGE 10: CRM & EXECUTIVE PORTAL ---------------- -->
+    <!-- ---------------- PAGE 10: CRM & EXECUTIVE PORTAL (UPGRADED) ---------------- -->
     <section id="view-crm" class="app-view" style="display:none;">
-      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-8">
-        
-        <!-- CRM Header -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-subtle">
-          <div>
-            <div class="flex items-center gap-3">
-              <h2 class="headline-xl">Luxignia Executive CRM & Sales Portal</h2>
-              <span class="admin-badge">Live System</span>
-            </div>
-            <p class="text-xs text-muted mt-1">Real-time pipeline analytics, high-value patron orders, product inventory, and salon bookings.</p>
-          </div>
-
-          <!-- CRM Navigation Tabs -->
-          <div class="flex flex-wrap items-center gap-1.5 bg-surface-muted p-1.5 rounded-xl border border-subtle">
-            <button data-crm-tab="leads" class="luxury-tab-btn active">Leads Pipeline</button>
-            <button data-crm-tab="customers" class="luxury-tab-btn">Customer Archive</button>
-            <button data-crm-tab="enquiries" class="luxury-tab-btn">Enquiry Desk</button>
-            <button data-crm-tab="orders" class="luxury-tab-btn">Orders & Deliveries</button>
-            <button data-crm-tab="products" class="luxury-tab-btn">Catalog Inventory</button>
-            <button data-crm-tab="visits" class="luxury-tab-btn">Showroom Visits</button>
-            <button data-crm-tab="activity" class="luxury-tab-btn">Audit Log</button>
-          </div>
+      <div class="max-w-3xl mx-auto px-6 py-20 text-center">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-3xl bg-[#6366F1]/15 text-[#6366F1] border border-[#6366F1]/30 flex items-center justify-center shadow-lg">
+          <span class="material-symbols-outlined text-4xl">dashboard</span>
         </div>
-
-        <!-- Dashboard KPI Bar -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div class="stat-card">
-            <span class="text-xs font-bold uppercase tracking-wider text-muted">Total Gross Revenue</span>
-            <div id="crm-stat-revenue" class="val">$0</div>
-            <span class="text-[10px] text-green-700 font-bold">+18.4% vs target</span>
-          </div>
-
-          <div class="stat-card">
-            <span class="text-xs font-bold uppercase tracking-wider text-muted">Completed Orders</span>
-            <div id="crm-stat-orders" class="val">0</div>
-            <span class="text-[10px] text-muted">White-Glove Dispatched</span>
-          </div>
-
-          <div class="stat-card">
-            <span class="text-xs font-bold uppercase tracking-wider text-muted">Active HNW Leads</span>
-            <div id="crm-stat-leads" class="val">0</div>
-            <span class="text-[10px] text-gold-bright font-bold">High Priority Consults</span>
-          </div>
-
-          <div class="stat-card">
-            <span class="text-xs font-bold uppercase tracking-wider text-muted">Lead Conversion Rate</span>
-            <div id="crm-stat-conv" class="val">0%</div>
-            <span class="text-[10px] text-green-700 font-bold">Above Target (25%)</span>
-          </div>
+        <span class="badge-gold mb-3 inline-block">Production Operating System</span>
+        <h2 class="headline-xl mb-4">Luxignia Executive CRM & E-Commerce Suite</h2>
+        <p class="text-sm text-muted mb-8 max-w-lg mx-auto leading-relaxed">
+          The legacy CRM tables have been upgraded to the comprehensive Luxignia SaaS platform featuring real-time kanban pipelines, interactive revenue charts, order detail drawers, and GST tax invoice generation.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="/crm" class="btn-primary py-3.5 px-8 text-xs font-bold inline-flex items-center gap-2 shadow-md">
+            <span>Launch CRM Dashboard</span>
+            <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </a>
+          <a href="/crm?tab=orders" class="btn-outline py-3.5 px-6 text-xs font-bold inline-flex items-center gap-2">
+            <span>View Orders & Consignments</span>
+          </a>
         </div>
-
-        <!-- Tab Content Container -->
-        <div id="crm-tab-content">
-          <!-- Rendered dynamically by crm.js -->
-        </div>
-
       </div>
     </section>
 
-    <!-- ---------------- PAGE 11: ADMIN PANEL ---------------- -->
+    <!-- ---------------- PAGE 11: ADMIN PANEL (UPGRADED) ---------------- -->
     <section id="view-admin" class="app-view" style="display:none;">
-      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-8">
-        
-        <!-- Admin Header -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-subtle">
-          <div>
-            <div class="flex items-center gap-3">
-              <h2 class="headline-xl">System Administration Console</h2>
-              <span class="role-badge role-super_admin">Super Administrator</span>
-            </div>
-            <p class="text-xs text-muted mt-1">Role-based access control, user accounts, category hierarchies, and CMS editorial management.</p>
-          </div>
-
-          <!-- Admin Navigation Tabs -->
-          <div class="flex flex-wrap items-center gap-1.5 bg-surface-muted p-1.5 rounded-xl border border-subtle">
-            <button data-admin-tab="users" class="luxury-tab-btn active">User Accounts</button>
-            <button data-admin-tab="categories" class="luxury-tab-btn">Categories</button>
-            <button data-admin-tab="content" class="luxury-tab-btn">Content CMS</button>
-            <button data-admin-tab="system" class="luxury-tab-btn">System Health</button>
-          </div>
+      <div class="max-w-3xl mx-auto px-6 py-20 text-center">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-3xl bg-[#7C3AED]/15 text-[#7C3AED] border border-[#7C3AED]/30 flex items-center justify-center shadow-lg">
+          <span class="material-symbols-outlined text-4xl">admin_panel_settings</span>
         </div>
-
-        <!-- Admin Tab Content Container -->
-        <div id="admin-tab-content">
-          <!-- Rendered dynamically by crm.js / app.js -->
+        <span class="role-badge role-super_admin mb-3 inline-block">Super Administrator</span>
+        <h2 class="headline-xl mb-4">Luxignia System Operations & Team RBAC</h2>
+        <p class="text-sm text-muted mb-8 max-w-lg mx-auto leading-relaxed">
+          Staff credentials, RBAC security matrices, audit logging, and curatorial permissions are now managed centrally in the Executive CRM Suite.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="/crm?tab=team" class="btn-primary py-3.5 px-8 text-xs font-bold inline-flex items-center gap-2 shadow-md">
+            <span>Open Team & RBAC Management</span>
+            <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </a>
+          <a href="/crm?tab=settings" class="btn-outline py-3.5 px-6 text-xs font-bold inline-flex items-center gap-2">
+            <span>Platform Settings & Audit</span>
+          </a>
         </div>
-
       </div>
     </section>
 

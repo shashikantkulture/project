@@ -36,25 +36,13 @@ class LuxigniaCRM {
   }
 
   async init() {
-    await this.fetchStats();
-    await this.fetchLeads();
-    await this.fetchCustomers();
-    await this.fetchEnquiries();
-    await this.fetchOrders();
-    await this.fetchProducts();
-    await this.fetchVisits();
-    await this.fetchActivities();
-    this.renderStats();
-    this.renderActiveTab();
-    this.bindEvents();
+    window.location.href = '/crm';
+    return;
   }
 
   async initAdmin() {
-    await this.fetchUsers();
-    await this.fetchCategories();
-    await this.fetchContent();
-    this.renderAdminTab();
-    this.bindAdminEvents();
+    window.location.href = '/crm?tab=team';
+    return;
   }
 
   // --- DATA FETCHERS ---

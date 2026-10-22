@@ -65,30 +65,19 @@ export default function Header() {
             </Link>
           ))}
 
-          {/* Role-gated Navigation Links */}
-          {user && ['staff', 'admin', 'super_admin'].includes(user.role) && (
-            <Link
-              href="/crm"
-              className={`px-3 py-1.5 text-[12px] font-bold tracking-wider uppercase flex items-center gap-1 text-[#8C6A1E] bg-[#D4AF37]/15 rounded-md ${
-                isActive('/crm') ? 'border border-[#C5A059]' : ''
-              }`}
-            >
-              <span className="material-symbols-outlined text-[16px]">dashboard</span>
-              <span>CRM</span>
-            </Link>
-          )}
-
-          {user && ['admin', 'super_admin'].includes(user.role) && (
-            <Link
-              href="/admin"
-              className={`px-3 py-1.5 text-[12px] font-bold tracking-wider uppercase flex items-center gap-1 text-purple-900 bg-purple-100 rounded-md ${
-                isActive('/admin') ? 'border border-purple-400' : ''
-              }`}
-            >
-              <span className="material-symbols-outlined text-[16px]">admin_panel_settings</span>
-              <span>Admin</span>
-            </Link>
-          )}
+          {/* Executive CRM Suite Navigation Button */}
+          <Link
+            href="/crm"
+            className={`px-3 py-1.5 text-[11px] font-bold tracking-wider uppercase flex items-center gap-1.5 rounded-full transition-all ${
+              isActive('/crm')
+                ? 'text-white bg-[#0A1C13] shadow-sm'
+                : 'text-[#8C6A1E] bg-[#D4AF37]/20 hover:bg-[#D4AF37]/35 border border-[#C5A059]/40'
+            }`}
+            title="Luxignia CRM & Operations Operating System"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span>CRM Suite</span>
+          </Link>
         </nav>
 
         {/* 3. Right: Action Cluster */}
@@ -175,18 +164,10 @@ export default function Header() {
                     <span className="material-symbols-outlined text-[16px]">inventory_2</span>
                     <span>My Acquisitions</span>
                   </Link>
-                  {['staff', 'admin', 'super_admin'].includes(user.role) && (
-                    <Link href="/crm" className="flex items-center gap-2 px-4 py-2 text-xs text-[#8C6A1E] font-bold hover:bg-[#F7F4EE]">
-                      <span className="material-symbols-outlined text-[16px]">leaderboard</span>
-                      <span>Executive CRM</span>
-                    </Link>
-                  )}
-                  {['admin', 'super_admin'].includes(user.role) && (
-                    <Link href="/admin" className="flex items-center gap-2 px-4 py-2 text-xs text-purple-900 font-bold hover:bg-[#F7F4EE]">
-                      <span className="material-symbols-outlined text-[16px]">admin_panel_settings</span>
-                      <span>Admin Console</span>
-                    </Link>
-                  )}
+                  <Link href="/crm" className="flex items-center gap-2 px-4 py-2 text-xs text-[#8C6A1E] font-bold hover:bg-[#F7F4EE]">
+                    <span className="material-symbols-outlined text-[16px]">dashboard</span>
+                    <span>Executive CRM Suite</span>
+                  </Link>
                   <div className="border-t border-gray-100 my-1"></div>
                   <button
                     onClick={handleLogout}
@@ -237,24 +218,14 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
-          {user && ['staff', 'admin', 'super_admin'].includes(user.role) && (
-            <Link
-              href="/crm"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block px-3 py-2 text-sm font-bold uppercase tracking-wider text-[#8C6A1E] bg-[#D4AF37]/15 rounded-lg"
-            >
-              Executive CRM
-            </Link>
-          )}
-          {user && ['admin', 'super_admin'].includes(user.role) && (
-            <Link
-              href="/admin"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block px-3 py-2 text-sm font-bold uppercase tracking-wider text-purple-900 bg-purple-100 rounded-lg"
-            >
-              Admin Console
-            </Link>
-          )}
+          <Link
+            href="/crm"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="flex items-center justify-between px-3 py-2 text-sm font-bold uppercase tracking-wider text-[#8C6A1E] bg-[#D4AF37]/15 rounded-lg"
+          >
+            <span>Executive CRM Suite</span>
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-extrabold">LIVE</span>
+          </Link>
           <div className="pt-4 border-t border-gray-200">
             <button
               onClick={() => {

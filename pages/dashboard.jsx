@@ -89,6 +89,12 @@ export default function DashboardPage() {
           </div>
 
           <div className="flex items-center gap-3">
+            {['staff', 'admin', 'super_admin'].includes(user.role) && (
+              <Link href="/crm" className="py-2.5 px-4 text-xs font-bold text-[#FED488] border border-[#D4AF37]/70 rounded-full hover:bg-[#D4AF37]/20 flex items-center gap-1.5 transition-colors">
+                <span className="material-symbols-outlined text-[16px]">dashboard</span>
+                <span>Executive CRM Suite</span>
+              </Link>
+            )}
             <Link href="/shop" className="btn-gold py-2.5 px-5 text-xs font-bold">
               Explore Collections
             </Link>

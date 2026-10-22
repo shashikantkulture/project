@@ -53,10 +53,15 @@ export default function Footer() {
             <div className="space-y-3 text-xs text-[#E5E2DC]">
               <p>Direct assistance for private estate acquisitions and white-glove security delivery.</p>
               <div className="font-mono text-[#D4AF37] font-bold text-sm tracking-wide">+1 (800) LUX-VAULT</div>
-              <div className="text-[11px] text-[#A7F3D0]">concierge@luxignia.com</div>
               <Link href="/contact" className="inline-block mt-1 text-[11px] font-bold uppercase tracking-wider text-[#D4AF37] border-b border-[#D4AF37] pb-0.5 hover:text-white">
                 Initiate Private Consultation &rarr;
               </Link>
+              <div className="pt-2">
+                <Link href="/crm" className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#FED488] bg-[#D4AF37]/15 px-2.5 py-1 rounded-md hover:bg-[#D4AF37]/25 transition-colors">
+                  <span className="material-symbols-outlined text-[14px]">dashboard</span>
+                  <span>Executive CRM Suite &rarr;</span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
